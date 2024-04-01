@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Gastos de Energia</title>
+    <link rel="stylesheet" href="styles5.css">
+</head>
+<body>
+    <h1>Calculadora de Gastos de Energia</h1>
+    
+    <h2>Selecione os aparelhos que você possui:</h2>
+    <form id="formEletrodomesticos">
+        <input type="text" id="aparelhoInput" list="aparelhos" placeholder="Selecione um aparelho...">
+        <datalist id="aparelhos">
+            <option value="Ar Condicionado">
+            <option value="Geladeira">
+            <option value="TV">
+            <option value="Máquina de Lavar">
+            <!-- Adicione mais itens conforme necessário -->
+        </datalist>
+        <div id="quantidadeInput" style="display: none;">
+            <label for="quantidade">Quantidade:</label>
+            <input type="number" id="quantidade" name="quantidade" min="1" value="1">
+        </div>
+        <button type="button" id="adicionarAparelho">Adicionar</button>
+        <div id="aparelhosSelecionados">
+            <h3>Aparelhos Selecionados:</h3>
+            <ul id="listaAparelhos"></ul>
+        </div>
+        
+        <label for="custoKwh">Custo por kWh (em R$):</label>
+        <input type="text" id="custoKwh" name="custoKwh" value="0.50">
+
+        <label for="tempoUso">Tempo de Uso (em horas):</label>
+        <input type="text" id="tempoUso" name="tempoUso" value="5">
+
+        <input type="submit" value="Calcular">
+    </form>
+
+    <div id="resultado"></div>
+
+    <script>
+        // Função para calcular o consumo de energia
+        function calcularConsumo(aparelho, quantidade, tempoUso) {
+            switch (aparelho) {
+                case "Ar Condicionado":
+                    return 120 * quantidade * tempoUso;
+                case "Geladeira":
+                    return 80 * quantidade * tempoUso;
+                case "TV":
+                    return 50 * quantidade * tempoUso;
+                case "Máquina de Lavar":
+                    return 150 * quantidade * tempoUso;
+                default:
+                    return 0;
+            }
+        }
+
+        document.getElementById("aparelhoInput").addEventListener("change", function() {
+            var aparelhoInput = document.getElementById("aparelhoInput");
+            var quantidadeInput = document.getElementById("quantidadeInput");
+            if (aparelhoInput.value !== "") {
+                quantidadeInput.style.display = "block";
+            } else {
+                quantidadeInput.style.display = "none";
+            }
+        });
+
+        document.getElementById("adicionarAparelho").addEventListener("click", function() {
+            var aparelhoInput = document.getElementById("aparelhoInput");
+            var quantidadeInput = document.getElementById("quantidade");
+            var aparelhoSelecionado = aparelhoInput.value;
+            var quantidadeSelecionada = quantidadeInput.value;
+            if (aparelhoSelecionado && quantidadeSelecionada > 0) {
+                var listaAparelhos = document.getElementById("listaAparelhos");
+                var listItem = document.createElement("li");
+                listItem.textContent = quantidadeSelecionada + "x " + aparelhoSelecionado;
+                listaAparelhos.appendChild(listItem);
+                aparelhoInput.value = "";
+                quantidadeInput.value = "1";
+                document.getElementById("quantidadeInput").style.display = "none";
+            }
+        });
+
+        document.getElementById("formEletrodomesticos").addEventListener("submit", function(event) {
+            event.preventDefault(); // Impede o envio do formulário padrão
+
+            var custoKwh = parseFloat(document.getElementById("custoKwh").value);
+            var tempoUso = parseFloat(document.getElementById("tempoUso").value);
+            var totalEnergia = 0;
+
+            var aparelhosSelecionados = document.querySelectorAll("#listaAparelhos li");
+            aparelhosSelecionados.forEach(function(aparelhoSelecionado) {
+                var partes = aparelhoSelecionado.textContent.split("x ");
+                var quantidade = parseInt(partes[0]);
+                var aparelho = partes[1];
+                totalEnergia += calcularConsumo(aparelho, quantidade, tempoUso);
+            });
+
+            var custoTotal = totalEnergia * custoKwh;
+
+            document.getElementById("resultado").innerHTML = "<strong>Custo Total de Energia:</strong> R$ " + custoTotal.toFixed(2);
+        });
+    </script>
+</body>
+</html>

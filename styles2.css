@@ -1,0 +1,52 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 200px;
+    background-color: #4CAF50; /* Cor verde */
+    padding: 20px;
+}
+
+.sidebar h2 {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar nav ul li {
+    padding: 10px 0;
+}
+
+.sidebar nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    padding: 5px 10px;
+}
+
+.sidebar nav ul li a:hover {
+    background-color: #3e8e41; /* Cor verde mais escura */
+}
+
+canvas#energyChart {
+    position: fixed;
+    top: 10px; /* Ajuste conforme necessário */
+    right: 10px; /* Ajuste conforme necessário */
+    z-index: 999; /* Garante que o gráfico esteja acima do menu */
+    max-width: 400px; /* Define a largura máxima desejada */
+    max-height: 250px; /* Define a altura máxima desejada */
+}
+
