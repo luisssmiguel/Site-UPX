@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráfico de Resíduos</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles4.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Quantidade de Resíduos</h1>
+    <div>
+        <label for="month">Mês:</label>
+        <select id="month">
+            <option value="Janeiro">Janeiro</option>
+            <option value="Fevereiro">Fevereiro</option>
+            <option value="Março">Março</option>
+            <option value="Abril">Abril</option>
+            <option value="Maio">Maio</option>
+            <option value="Junho">Junho</option>
+            <option value="Julho">Julho</option>
+            <option value="Agosto">Agosto</option>
+            <option value="Setembro">Setembro</option>
+            <option value="Outubro">Outubro</option>
+            <option value="Novembro">Novembro</option>
+            <option value="Dezembro">Dezembro</option>
+        </select>
+    </div>
+    <div>
+        <label for="recycledAmount">Quantidade de Resíduos Reciclados (kg):</label>
+        <input type="number" id="recycledAmount" min="0">
+    </div>
+    <div>
+        <label for="trashAmount">Quantidade de Resíduos para o Lixo (kg):</label>
+        <input type="number" id="trashAmount" min="0">
+    </div>
+    <button onclick="addData()" id="addDataBtn">Adicionar Dados</button>
+    <button id="show2023Btn">Visualizar Gráficos de 2023</button>
+    <button id="clearDataBtn">Apagar Dados</button>
+    <button id="backToCurrentBtn">Voltar para o Gráfico Atual</button>
+    <canvas id="myChart" style="width: 400px; height: 220px;"></canvas>
+    <div id="currentGraphPanel"></div>
+</div>
+
+<script src="script3.js"></script>
+</body>
+</html>
