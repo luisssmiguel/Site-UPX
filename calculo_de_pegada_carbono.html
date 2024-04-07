@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo de Pegada de Carbono</title>
+    <link rel="stylesheet" href="styles_carbono.css">
+</head>
+<body>
+    <header>
+        <h1>Cálculo de Pegada de Carbono</h1>
+    </header>
+
+    <div class="calculator-container">
+        <h2>Calculadora de Pegada de Carbono</h2>
+        <form id="carbon-footprint-form">
+            <label for="transportation">Transporte (km/mês):</label>
+            <input type="number" id="transportation" name="transportation" required>
+
+            <label for="energy">Consumo de Energia (kWh/mês):</label>
+            <input type="number" id="energy" name="energy" required>
+
+            <!-- Outros campos para o cálculo, como consumo de água, resíduos, etc. -->
+
+            <button type="submit">Calcular Pegada de Carbono</button>
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <script src="script_carbono.js"></script>
+</body>
+</html>
