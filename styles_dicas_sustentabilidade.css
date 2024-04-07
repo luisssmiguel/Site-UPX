@@ -1,0 +1,63 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+section {
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: #007bff;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.articles {
+    text-align: center; /* Centralizar o conteúdo horizontalmente */
+}
+
+.articles h2 {
+    margin-bottom: 30px; /* Adicionar espaço entre o título e o iframe */
+}
+
+.iframe-container {
+    display: inline-block; /* Permite o alinhamento vertical */
+    vertical-align: middle; /* Centralizar o conteúdo verticalmente */
+}
+
+.articles iframe {
+    width: 1000px; /* Largura desejada do iframe */
+    height: 600px; /* Altura desejada do iframe */
+    border: none; /* Remover borda do iframe, se necessário */
+    overflow: auto; /* Mostrar barras de rolagem quando necessário */
+}
+
+
