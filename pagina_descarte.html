@@ -7,6 +7,52 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" type="text/css" href="styles_pagina_descarte.css">
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <style>
+        /* Estilo para o modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Estilos para o texto "Ano de 2024" */
+        #yearLabel {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 
@@ -41,8 +87,49 @@
     <button id="show2023Btn">Visualizar Gráficos de 2023</button>
     <button id="clearDataBtn">Apagar Dados</button>
     <button id="backToCurrentBtn">Voltar para o Gráfico Atual</button>
+    <button id="addMoreDataBtn">Adicionar Mais</button> <!-- Botão para adicionar mais dados -->
     <canvas id="myChart" style="width: 400px; height: 220px;"></canvas>
     <div id="currentGraphPanel"></div>
+    <div id="currentYearPanel"></div> <!-- Painel para exibir o ano atual -->
+    <div id="yearLabel" style="display: none;">Ano de 2024</div> <!-- Texto "Ano de 2024" -->
+
+    <!-- Popup Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Adicionar Dados</h2>
+            <div>
+                <label for="newMonth">Mês:</label>
+                <select id="newMonth">
+                    <option value="Janeiro">Janeiro</option>
+                    <option value="Fevereiro">Fevereiro</option>
+                    <option value="Março">Março</option>
+                    <option value="Abril">Abril</option>
+                    <option value="Maio">Maio</option>
+                    <option value="Junho">Junho</option>
+                    <option value="Julho">Julho</option>
+                    <option value="Agosto">Agosto</option>
+                    <option value="Setembro">Setembro</option>
+                    <option value="Outubro">Outubro</option>
+                    <option value="Novembro">Novembro</option>
+                    <option value="Dezembro">Dezembro</option>
+                </select>
+            </div>
+            <div>
+                <label for="newRecycledAmount">Quantidade de Resíduos Reciclados (kg):</label>
+                <input type="number" id="newRecycledAmount" min="0">
+            </div>
+            <div>
+                <label for="newTrashAmount">Quantidade de Resíduos para o Lixo (kg):</label>
+                <input type="number" id="newTrashAmount" min="0">
+            </div>
+            <div>
+                <label for="newYear">Ano:</label>
+                <input type="number" id="newYear" min="2000" max="2100" value="2024"> <!-- Campo para adicionar o ano -->
+            </div>
+            <button id="saveNewDataBtn">Salvar</button> <!-- Botão para salvar os novos dados -->
+        </div>
+    </div>
 </div>
 
 <script src="script3.js"></script>
