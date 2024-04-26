@@ -6,12 +6,82 @@
     <title>Agenda de Coleta de Resíduos</title>
     <link rel="stylesheet" type="text/css" href="styles_agenda.css">
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <style>
+        /* Estilos para o modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .delete-events-btn {
+            background-color: #f44336;
+        }
+
+        .delete-events-btn:hover {
+            background-color: #dd3333;
+        }
+    </style>
 </head>
 <body>
 
 <div class="container">
     <h1>Agenda de Coleta de Resíduos</h1>
-    <table>
+    <table id="eventTable">
         <thead>
             <tr>
                 <th>Data</th>
@@ -36,6 +106,85 @@
             <!-- Adicionar mais linhas -->
         </tbody>
     </table>
+    <button id="addEventBtn">Adicionar Evento</button>
+    <button id="deleteEventsBtn" class="delete-events-btn">Excluir Eventos</button>
 </div>
+
+<!-- Modal para adicionar novo evento -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Novo Evento</h2>
+        <label for="eventDate">Data:</label>
+        <input type="text" id="eventDate">
+        <label for="eventType">Tipo de Resíduo:</label>
+        <input type="text" id="eventType">
+        <label for="eventLocation">Local:</label>
+        <input type="text" id="eventLocation">
+        <label for="eventTime">Horário:</label>
+        <input type="text" id="eventTime">
+        <button id="saveEventBtn">Salvar</button>
+    </div>
+</div>
+
+<script>
+    var modal = document.getElementById('myModal');
+    var btn = document.getElementById("addEventBtn");
+    var span = document.getElementsByClassName("close")[0];
+    var deleteBtn = document.getElementById("deleteEventsBtn");
+
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    document.getElementById('saveEventBtn').addEventListener('click', function() {
+        var eventDate = document.getElementById('eventDate').value;
+        var eventType = document.getElementById('eventType').value;
+        var eventLocation = document.getElementById('eventLocation').value;
+        var eventTime = document.getElementById('eventTime').value;
+
+        // Adiciona os dados na tabela
+        var eventTable = document.getElementById("eventTable").getElementsByTagName('tbody')[0];
+        var newRow = eventTable.insertRow();
+        var cellDate = newRow.insertCell(0);
+        var cellType = newRow.insertCell(1);
+        var cellLocation = newRow.insertCell(2);
+        var cellTime = newRow.insertCell(3);
+
+        cellDate.innerHTML = eventDate;
+        cellType.innerHTML = eventType;
+        cellLocation.innerHTML = eventLocation;
+        cellTime.innerHTML = eventTime;
+
+        modal.style.display = "none"; // Fecha o modal
+    });
+
+    deleteBtn.onclick = function() {
+        var eventTable = document.getElementById("eventTable");
+        var checkboxes = eventTable.querySelectorAll('input[type="checkbox"]');
+        var deleteMode = deleteBtn.classList.toggle("delete-mode");
+        var deleteBtnText = deleteMode ? "Cancelar" : "Excluir Eventos";
+        deleteBtn.textContent = deleteBtnText;
+
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (deleteMode) {
+                checkboxes[i].style.display = "inline";
+            } else {
+                checkboxes[i].style.display = "none";
+            }
+        }
+    }
+</script>
+
 </body>
 </html>

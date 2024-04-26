@@ -120,8 +120,8 @@ document.addEventListener("DOMContentLoaded", function () {
         // Remover o botão "Apagar Dados" quando visualizando o gráfico de 2023
         clearDataBtn.style.display = 'none';
 
-        // Exibir o texto "Ano: 2023" no lugar do botão
-        var yearLabel = document.getElementById('yearLabel');
+        // Exibir o texto "Gráfico de 2023" no lugar do botão
+        var yearLabel = document.getElementById('year2024Panel');
         yearLabel.style.display = 'block';
     });
 
@@ -135,9 +135,13 @@ document.addEventListener("DOMContentLoaded", function () {
         myChart.data.datasets[0].data = [];
         myChart.data.datasets[1].data = [];
         
-        // Exibir apenas "Ano: 2023" no painel de ano
+        // Exibir apenas "Gráfico de 2023" no painel de ano
+        var yearLabel = document.getElementById('yearLabel');
+        yearLabel.style.display = 'block';
+
+        // Esconder o painel de ano padrão
         var currentYearPanel = document.getElementById('currentYearPanel');
-        currentYearPanel.innerText = "Ano: 2023";
+        currentYearPanel.style.display = 'none';
         
         // Adicionando os dados de 2023 ao gráfico
         for (var i = 0; i < 12; i++) {
@@ -206,15 +210,15 @@ document.addEventListener("DOMContentLoaded", function () {
         // Reexibir o botão "Apagar Dados" quando voltamos para o gráfico padrão
         clearDataBtn.style.display = 'block';
 
-        // Esconder o texto "Ano: 2023"
-        var yearLabel = document.getElementById('yearLabel');
+        // Esconder o texto "Gráfico de 2023"
+        var yearLabel = document.getElementById('year2024Panel');
         yearLabel.style.display = 'none';
     });
 
     // Função para atualizar o painel mostrando o gráfico atual
     function updateCurrentGraphPanel(graphName) {
         var currentYearPanel = document.getElementById('currentYearPanel');
-        currentYearPanel.innerText = "Ano: 2024"; // Exibindo "Ano: 2024" por padrão
+        currentYearPanel.innerText = graphName;
     }
 
     // Ao carregar a página, exibir o ano corrente
