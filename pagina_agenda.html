@@ -75,6 +75,10 @@
         .delete-events-btn:hover {
             background-color: #dd3333;
         }
+
+        .delete-row-btn {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -88,26 +92,16 @@
                 <th>Tipo de Resíduo</th>
                 <th>Local</th>
                 <th>Horário</th>
+                <th>Excluir</th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td>15/04/2024</td>
-                <td>Papel e Papelão</td>
-                <td>Rua das Flores, 123</td>
-                <td>09:00 - 12:00</td>
-            </tr>
-            <tr>
-                <td>17/04/2024</td>
-                <td>Plástico</td>
-                <td>Avenida Principal, 456</td>
-                <td>14:00 - 17:00</td>
-            </tr>
-            <!-- Adicionar mais linhas -->
+        <tbody id="eventList">
+            <!-- Linhas dos eventos serão adicionadas aqui -->
         </tbody>
     </table>
     <button id="addEventBtn">Adicionar Evento</button>
-    <button id="deleteEventsBtn" class="delete-events-btn">Excluir Eventos</button>
+    <button id="deleteEventsBtn" class="delete-events-btn">Excluir Evento</button>
+    <button id="cancelDeleteBtn" style="display: none;">Cancelar</button> <!-- Removido um botão de cancelar -->
 </div>
 
 <!-- Modal para adicionar novo evento -->
@@ -128,10 +122,22 @@
 </div>
 
 <script>
+    // Função para carregar os eventos salvos do localStorage
+    function loadEvents() {
+        var savedEvents = localStorage.getItem('events');
+        if (savedEvents) {
+            document.getElementById('eventList').innerHTML = savedEvents;
+        }
+    }
+
+    // Carrega os eventos ao carregar a página
+    loadEvents();
+
     var modal = document.getElementById('myModal');
     var btn = document.getElementById("addEventBtn");
     var span = document.getElementsByClassName("close")[0];
     var deleteBtn = document.getElementById("deleteEventsBtn");
+    var cancelBtn = document.getElementById("cancelDeleteBtn");
 
     btn.onclick = function() {
         modal.style.display = "block";
@@ -147,43 +153,79 @@
         }
     }
 
+    // Limpar o modo de exclusão de evento quando a página é descarregada
+    window.addEventListener('beforeunload', function() {
+        deleteBtn.classList.remove("delete-mode");
+        cancelBtn.style.display = "none";
+
+        var deleteButtons = document.querySelectorAll('.delete-row-btn');
+        for (var i = 0; i < deleteButtons.length; i++) {
+            deleteButtons[i].style.display = "none";
+        }
+    });
+
     document.getElementById('saveEventBtn').addEventListener('click', function() {
         var eventDate = document.getElementById('eventDate').value;
         var eventType = document.getElementById('eventType').value;
         var eventLocation = document.getElementById('eventLocation').value;
         var eventTime = document.getElementById('eventTime').value;
 
-        // Adiciona os dados na tabela
-        var eventTable = document.getElementById("eventTable").getElementsByTagName('tbody')[0];
-        var newRow = eventTable.insertRow();
-        var cellDate = newRow.insertCell(0);
-        var cellType = newRow.insertCell(1);
-        var cellLocation = newRow.insertCell(2);
-        var cellTime = newRow.insertCell(3);
+        // Cria uma nova linha para o evento
+        var newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td>${eventDate}</td>
+            <td>${eventType}</td>
+            <td>${eventLocation}</td>
+            <td>${eventTime}</td>
+            <td><button class="delete-row-btn">Excluir</button></td>
+        `;
 
-        cellDate.innerHTML = eventDate;
-        cellType.innerHTML = eventType;
-        cellLocation.innerHTML = eventLocation;
-        cellTime.innerHTML = eventTime;
+        // Adiciona a linha à tabela
+        document.getElementById('eventList').appendChild(newRow);
+
+        // Salva os eventos no localStorage
+        localStorage.setItem('events', document.getElementById('eventList').innerHTML);
 
         modal.style.display = "none"; // Fecha o modal
     });
 
     deleteBtn.onclick = function() {
-        var eventTable = document.getElementById("eventTable");
-        var checkboxes = eventTable.querySelectorAll('input[type="checkbox"]');
         var deleteMode = deleteBtn.classList.toggle("delete-mode");
-        var deleteBtnText = deleteMode ? "Cancelar" : "Excluir Eventos";
+        var deleteBtnText = deleteMode ? "Parar de Excluir " : "Excluir Evento";
         deleteBtn.textContent = deleteBtnText;
+        cancelBtn.style.display = deleteMode ? "inline" : "none";
 
-        for (var i = 0; i < checkboxes.length; i++) {
-            if (deleteMode) {
-                checkboxes[i].style.display = "inline";
-            } else {
-                checkboxes[i].style.display = "none";
-            }
+        var deleteButtons = document.querySelectorAll('.delete-row-btn');
+        for (var i = 0; i < deleteButtons.length; i++) {
+            deleteButtons[i].style.display = deleteMode ? "inline" : "none";
         }
     }
+
+    // Adiciona o evento de clique no botão de exclusão
+    document.getElementById('deleteEventsBtn').addEventListener('click', function() {
+        var deleteButtons = document.querySelectorAll('.delete-row-btn');
+        for (var i = 0; i < deleteButtons.length; i++) {
+            deleteButtons[i].style.display = "inline";
+            deleteButtons[i].onclick = function() {
+                var row = this.parentNode.parentNode;
+                row.parentNode.removeChild(row);
+                // Salva os eventos atualizados no localStorage
+                localStorage.setItem('events', document.getElementById('eventList').innerHTML);
+            };
+        }
+    });
+
+    // Adiciona o evento de clique no botão de cancelar exclusão
+    document.getElementById('cancelDeleteBtn').addEventListener('click', function() {
+        deleteBtn.classList.remove("delete-mode");
+        deleteBtn.textContent = "Excluir Evento";
+        cancelBtn.style.display = "none";
+
+        var deleteButtons = document.querySelectorAll('.delete-row-btn');
+        for (var i = 0; i < deleteButtons.length; i++) {
+            deleteButtons[i].style.display = "none";
+        }
+    });
 </script>
 
 </body>
