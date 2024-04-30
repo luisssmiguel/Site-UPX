@@ -45,21 +45,7 @@
 
         /* Estilos para o texto "Ano de 2023" e "Ano de 2024" */
         #currentYearPanel {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        #year2024Panel {
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 18px;
-            font-weight: bold;
+            display: none;
         }
     </style>
 </head>
@@ -98,10 +84,7 @@
     <button id="backToCurrentBtn">Voltar para o Gráfico Atual</button>
     <button id="addMoreDataBtn">Adicionar Mais</button> <!-- Botão para adicionar mais dados -->
     <canvas id="myChart" style="width: 400px; height: 220px;"></canvas>
-    <div id="currentYearPanel"></div> <!-- Painel para exibir o ano atual -->
-    <div id="year2024Panel" style="display: none;">Ano de 2024</div> <!-- Texto "Ano de 2024" -->
-    <div id="yearLabel" style="display: none;">Gráfico de 2023</div> <!-- Texto "Gráfico de 2023" -->
-
+    
     <!-- Popup Modal -->
     <div id="myModal" class="modal">
         <div class="modal-content">
@@ -132,10 +115,6 @@
                 <label for="newTrashAmount">Quantidade de Resíduos para o Lixo (kg):</label>
                 <input type="number" id="newTrashAmount" min="0">
             </div>
-            <div>
-                <label for="newYear">Ano:</label>
-                <input type="number" id="newYear" min="2000" max="2100" value="2024"> <!-- Campo para adicionar o ano -->
-            </div>
             <button id="saveNewDataBtn">Salvar</button> <!-- Botão para salvar os novos dados -->
         </div>
     </div>
@@ -144,3 +123,4 @@
 <script src="script3.js"></script>
 </body>
 </html>
+    

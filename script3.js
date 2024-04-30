@@ -108,7 +108,6 @@ document.addEventListener("DOMContentLoaded", function () {
         myChart.update();
     });
 
-    // Função para visualizar os gráficos de 2023
     document.getElementById('show2023Btn').addEventListener('click', function() {
         // Ocultar o painel de ano quando visualizamos o gráfico de 2023
         var currentYearPanel = document.getElementById('currentYearPanel');
@@ -116,12 +115,12 @@ document.addEventListener("DOMContentLoaded", function () {
         
         // Adicionar dados de 2023 ao gráfico
         addDataFor2023();
-
+    
         // Remover o botão "Apagar Dados" quando visualizando o gráfico de 2023
         clearDataBtn.style.display = 'none';
-
-        // Exibir o texto "Gráfico de 2023" no lugar do botão
-        var yearLabel = document.getElementById('year2024Panel');
+    
+        // Exibir o texto "Ano de 2023" no lugar do botão
+        var yearLabel = document.getElementById('year2023Panel');
         yearLabel.style.display = 'block';
     });
 
@@ -134,14 +133,6 @@ document.addEventListener("DOMContentLoaded", function () {
         myChart.data.labels = [];
         myChart.data.datasets[0].data = [];
         myChart.data.datasets[1].data = [];
-        
-        // Exibir apenas "Gráfico de 2023" no painel de ano
-        var yearLabel = document.getElementById('yearLabel');
-        yearLabel.style.display = 'block';
-
-        // Esconder o painel de ano padrão
-        var currentYearPanel = document.getElementById('currentYearPanel');
-        currentYearPanel.style.display = 'none';
         
         // Adicionando os dados de 2023 ao gráfico
         for (var i = 0; i < 12; i++) {
@@ -203,24 +194,12 @@ document.addEventListener("DOMContentLoaded", function () {
         myChart.data.datasets[0].data = JSON.parse(localStorage.getItem('recycledData')) || [];
         myChart.data.datasets[1].data = JSON.parse(localStorage.getItem('trashData')) || [];
         myChart.update(); // Atualiza o gráfico
-
-        // Exibir o ano corrente no painel de ano
-        updateCurrentGraphPanel("Gráfico do Ano Corrente"); // Atualiza o painel para mostrar o gráfico atual
-
+    
         // Reexibir o botão "Apagar Dados" quando voltamos para o gráfico padrão
         clearDataBtn.style.display = 'block';
-
+    
         // Esconder o texto "Gráfico de 2023"
-        var yearLabel = document.getElementById('year2024Panel');
+        var yearLabel = document.getElementById('year2023Panel');
         yearLabel.style.display = 'none';
     });
-
-    // Função para atualizar o painel mostrando o gráfico atual
-    function updateCurrentGraphPanel(graphName) {
-        var currentYearPanel = document.getElementById('currentYearPanel');
-        currentYearPanel.innerText = graphName;
-    }
-
-    // Ao carregar a página, exibir o ano corrente
-    updateCurrentGraphPanel("Gráfico do Ano Corrente");
 });
