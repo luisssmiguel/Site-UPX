@@ -8,14 +8,15 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+    background: linear-gradient(135deg, #4CAF50, #007bff, #ffeb3b);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
         }
+        
         form {
             background-color: rgb(216, 216, 216);
             padding: 20px;
@@ -62,7 +63,7 @@
     </style>
 </head>
 <body>
-    <form action="submit_form.php" method="POST">
+    <form id="registerForm">
         <h2>Cadastro</h2>
         <label for="email">E-mail:</label>
         <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>       
@@ -78,19 +79,55 @@
     </form>
 
     <script>
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evita o envio padrão do formulário
+            
+            // Captura os valores do formulário
+            const formData = new FormData(this);
+            const formDataJson = {};
+            formData.forEach((value, key) => {
+                formDataJson[key] = value;
+            });
+
+            // Configuração da requisição
+            const apiKey = '$2a$10$LuATwdayB1bFAjLU9gsChufqDoYEdxur6xCr8M71yU26hVVcTuKJu';
+            const binId = '66329fd0e41b4d34e4ed658e';
+            const config = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': apiKey
+                },
+                body: JSON.stringify(formDataJson)
+            };
+
+            // Faz a requisição para o JSONBin
+            fetch(`https://api.jsonbin.io/v3/b/${binId}`, config)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Data saved successfully:', data);
+                    alert('Cadastro realizado com sucesso!');
+                    // Aqui você pode redirecionar para outra página após o cadastro
+                })
+                .catch(error => {
+                    console.error('Error saving data:', error);
+                    alert('Erro ao cadastrar. Por favor, tente novamente.');
+                });
+        });
+
         // Adiciona o evento de clique ao ícone de olho
-document.querySelectorAll('.toggle-password').forEach(function(icon) {
-    icon.addEventListener('click', function() {
-        var input = document.querySelector(this.getAttribute('toggle'));
-        if (input.type === 'password') {
-            input.type = 'text';
-            this.classList.add('active');
-        } else {
-            input.type = 'password';
-            this.classList.remove('active');
-        }
-    });
-});
+        document.querySelectorAll('.toggle-password').forEach(function(icon) {
+            icon.addEventListener('click', function() {
+                var input = document.querySelector(this.getAttribute('toggle'));
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    this.classList.add('active');
+                } else {
+                    input.type = 'password';
+                    this.classList.remove('active');
+                }
+            });
+        });
     </script>
 </body>
 </html>
