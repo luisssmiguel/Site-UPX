@@ -16,3 +16,100 @@ h1 {
     text-align: center;
 }
 
+/* Estilo para o modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Estilos para o texto "Ano de 2023" e "Ano de 2024" */
+#currentYearPanel {
+    display: none;
+}
+
+/* Estilo para o canvas */
+#myChart {
+    margin-top: 20px; /* Adiciona um espaçamento superior */
+    width: 100%;
+    height: auto;
+}
+
+/* Estilos para todos os botões */
+button {
+    margin: 5px; /* Adiciona um espaçamento entre os botões */
+    padding: 10px 20px; /* Adiciona preenchimento interno */
+    font-size: 16px; /* Tamanho da fonte */
+    background-color: #007bff; /* Cor de fundo */
+    color: white; /* Cor do texto */
+    border: none; /* Remove a borda */
+    border-radius: 5px; /* Borda arredondada */
+    cursor: pointer; /* Muda o cursor para indicar interatividade */
+    transition: background-color 0.3s, transform 0.2s; /* Adiciona uma transição suave */
+}
+
+/* Efeito de hover para os botões */
+button:hover {
+    background-color: #0056b3; /* Altera a cor de fundo ao passar o cursor */
+    transform: translateY(-2px); /* Desloca o botão para cima ao passar o cursor */
+}
+
+/* Efeito de pressionar para os botões */
+button:active {
+    background-color: #003d80; /* Altera a cor de fundo quando o botão é pressionado */
+    transform: translateY(1px); /* Desloca o botão para baixo quando pressionado */
+}
+
+/* Estilo para o ícone de olho */
+.toggle-password {
+    position: relative;
+    top: -25px;
+    right: 0;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Estilo para o ícone de olho quando a senha está visível */
+.toggle-password.active::after {
+    content: "\f070"; /* Unicode para o ícone de olho aberto */
+}
+
+/* Estilo para o ícone de olho quando a senha está oculta */
+.toggle-password::after {
+    content: "\f06e"; /* Unicode para o ícone de olho fechado */
+    font-family: "Font Awesome"; /* Use uma biblioteca de ícones como o Font Awesome */
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 18px;
+}

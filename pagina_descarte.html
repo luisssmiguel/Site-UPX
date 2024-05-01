@@ -47,6 +47,23 @@
         #currentYearPanel {
             display: none;
         }
+
+        /* Estilos para o container */
+        .container {
+            margin: 0 auto; /* Centraliza horizontalmente */
+            max-width: 600px; /* Definindo uma largura máxima */
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center; /* Centraliza o conteúdo dentro do container */
+        }
+
+        /* Estilo para o canvas */
+        #myChart {
+            margin-top: 20px; /* Adiciona um espaçamento superior */
+            width: 100%;
+            height: auto;
+        }
     </style>
 </head>
 <body>
@@ -54,73 +71,69 @@
 <div class="container">
     <h1>Quantidade de Resíduos</h1>
     <div>
-        <label for="month">Mês:</label>
-        <select id="month">
-            <option value="Janeiro">Janeiro</option>
-            <option value="Fevereiro">Fevereiro</option>
-            <option value="Março">Março</option>
-            <option value="Abril">Abril</option>
-            <option value="Maio">Maio</option>
-            <option value="Junho">Junho</option>
-            <option value="Julho">Julho</option>
-            <option value="Agosto">Agosto</option>
-            <option value="Setembro">Setembro</option>
-            <option value="Outubro">Outubro</option>
-            <option value="Novembro">Novembro</option>
-            <option value="Dezembro">Dezembro</option>
-        </select>
+        <!-- O botão "Adicionar Dados" agora será ocultado por padrão -->
+        <button style="display: none;" onclick="addData()" id="addDataBtn">Adicionar Dados</button>
+        <button id="show2023Btn">Visualizar Gráficos de 2023</button>
+        <button id="clearDataBtn">Apagar Dados</button>
+        <button id="backToCurrentBtn">Voltar para o Gráfico Atual</button>
+        <button id="addMoreDataBtn">Adicionar Mais</button> <!-- Botão para adicionar mais dados -->
     </div>
-    <div>
-        <label for="recycledAmount">Quantidade de Resíduos Reciclados (kg):</label>
-        <input type="number" id="recycledAmount" min="0">
-    </div>
-    <div>
-        <label for="trashAmount">Quantidade de Resíduos para o Lixo (kg):</label>
-        <input type="number" id="trashAmount" min="0">
-    </div>
-    <button onclick="addData()" id="addDataBtn">Adicionar Dados</button>
-    <button id="show2023Btn">Visualizar Gráficos de 2023</button>
-    <button id="clearDataBtn">Apagar Dados</button>
-    <button id="backToCurrentBtn">Voltar para o Gráfico Atual</button>
-    <button id="addMoreDataBtn">Adicionar Mais</button> <!-- Botão para adicionar mais dados -->
-    <canvas id="myChart" style="width: 400px; height: 220px;"></canvas>
+    <canvas id="myChart"></canvas>
+</div>
     
-    <!-- Popup Modal -->
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Adicionar Dados</h2>
-            <div>
-                <label for="newMonth">Mês:</label>
-                <select id="newMonth">
-                    <option value="Janeiro">Janeiro</option>
-                    <option value="Fevereiro">Fevereiro</option>
-                    <option value="Março">Março</option>
-                    <option value="Abril">Abril</option>
-                    <option value="Maio">Maio</option>
-                    <option value="Junho">Junho</option>
-                    <option value="Julho">Julho</option>
-                    <option value="Agosto">Agosto</option>
-                    <option value="Setembro">Setembro</option>
-                    <option value="Outubro">Outubro</option>
-                    <option value="Novembro">Novembro</option>
-                    <option value="Dezembro">Dezembro</option>
-                </select>
-            </div>
-            <div>
-                <label for="newRecycledAmount">Quantidade de Resíduos Reciclados (kg):</label>
-                <input type="number" id="newRecycledAmount" min="0">
-            </div>
-            <div>
-                <label for="newTrashAmount">Quantidade de Resíduos para o Lixo (kg):</label>
-                <input type="number" id="newTrashAmount" min="0">
-            </div>
-            <button id="saveNewDataBtn">Salvar</button> <!-- Botão para salvar os novos dados -->
+<!-- Popup Modal -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Adicionar Dados</h2>
+        <div>
+            <label for="newMonth">Mês:</label>
+            <select id="newMonth">
+                <option value="Janeiro">Janeiro</option>
+                <option value="Fevereiro">Fevereiro</option>
+                <option value="Março">Março</option>
+                <option value="Abril">Abril</option>
+                <option value="Maio">Maio</option>
+                <option value="Junho">Junho</option>
+                <option value="Julho">Julho</option>
+                <option value="Agosto">Agosto</option>
+                <option value="Setembro">Setembro</option>
+                <option value="Outubro">Outubro</option>
+                <option value="Novembro">Novembro</option>
+                <option value="Dezembro">Dezembro</option>
+            </select>
         </div>
+        <div>
+            <label for="newRecycledAmount">Quantidade de Resíduos Reciclados (kg):</label>
+            <input type="number" id="newRecycledAmount" min="0">
+        </div>
+        <div>
+            <label for="newTrashAmount">Quantidade de Resíduos para o Lixo (kg):</label>
+            <input type="number" id="newTrashAmount" min="0">
+        </div>
+        <button id="saveNewDataBtn">Salvar</button> <!-- Botão para salvar os novos dados -->
     </div>
 </div>
 
 <script src="script3.js"></script>
+
+<script>
+    document.getElementById('show2023Btn').addEventListener('click', function() {
+        // Lógica para mostrar gráfico de 2023
+    });
+
+    document.getElementById('clearDataBtn').addEventListener('click', function() {
+        // Lógica para apagar dados
+    });
+
+    document.getElementById('backToCurrentBtn').addEventListener('click', function() {
+        // Lógica para voltar para o gráfico atual
+    });
+
+    document.getElementById('addMoreDataBtn').addEventListener('click', function() {
+        // Lógica para abrir o modal de adicionar mais dados
+    });
+</script>
+
 </body>
 </html>
-    

@@ -57,7 +57,8 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('addDataBtn').addEventListener('click', addData);
 
     // Função para abrir o modal ao clicar no botão "Adicionar Mais"
-    document.getElementById('addMoreDataBtn').addEventListener('click', function() {
+    var addMoreDataBtn = document.getElementById('addMoreDataBtn');
+    addMoreDataBtn.addEventListener('click', function() {
         document.getElementById('myModal').style.display = "block";
     });
 
@@ -69,7 +70,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Função para salvar os novos dados inseridos no modal
     document.getElementById('saveNewDataBtn').addEventListener('click', function() {
         var newMonth = document.getElementById('newMonth').value;
-        var newYear = document.getElementById('newYear').value; // Adicionado
         var newRecycledAmount = parseFloat(document.getElementById('newRecycledAmount').value);
         var newTrashAmount = parseFloat(document.getElementById('newTrashAmount').value);
 
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        myChart.data.labels.push(newMonth + ' ' + newYear); // Modificado
+        myChart.data.labels.push(newMonth);
         myChart.data.datasets[0].data.push(newRecycledAmount);
         myChart.data.datasets[1].data.push(newTrashAmount);
         
@@ -109,19 +109,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     document.getElementById('show2023Btn').addEventListener('click', function() {
-        // Ocultar o painel de ano quando visualizamos o gráfico de 2023
-        var currentYearPanel = document.getElementById('currentYearPanel');
-        currentYearPanel.style.display = 'none';
-        
-        // Adicionar dados de 2023 ao gráfico
         addDataFor2023();
-    
-        // Remover o botão "Apagar Dados" quando visualizando o gráfico de 2023
+
+        // Esconder o botão "Apagar Dados" quando visualizando o gráfico de 2023
         clearDataBtn.style.display = 'none';
-    
-        // Exibir o texto "Ano de 2023" no lugar do botão
-        var yearLabel = document.getElementById('year2023Panel');
-        yearLabel.style.display = 'block';
+
+        // Esconder o botão "Adicionar Mais" quando visualizando o gráfico de 2023
+        addMoreDataBtn.style.display = 'none';
     });
 
     function addDataFor2023() {
@@ -185,21 +179,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Função para voltar para o gráfico padrão (ano corrente)
     document.getElementById('backToCurrentBtn').addEventListener('click', function() {
-        // Exibir o painel de ano quando voltamos para o gráfico padrão
-        var currentYearPanel = document.getElementById('currentYearPanel');
-        currentYearPanel.style.display = 'block';
+        // Exibir o botão "Apagar Dados" quando voltamos para o gráfico padrão
+        clearDataBtn.style.display = 'block';
         
         // Restaurar os dados do ano corrente do localStorage
         myChart.data.labels = JSON.parse(localStorage.getItem('labels')) || [];
         myChart.data.datasets[0].data = JSON.parse(localStorage.getItem('recycledData')) || [];
         myChart.data.datasets[1].data = JSON.parse(localStorage.getItem('trashData')) || [];
         myChart.update(); // Atualiza o gráfico
-    
-        // Reexibir o botão "Apagar Dados" quando voltamos para o gráfico padrão
-        clearDataBtn.style.display = 'block';
-    
-        // Esconder o texto "Gráfico de 2023"
-        var yearLabel = document.getElementById('year2023Panel');
-        yearLabel.style.display = 'none';
+
+        // Exibir o botão "Adicionar Mais" quando voltamos para o gráfico padrão
+        addMoreDataBtn.style.display = 'block';
     });
 });

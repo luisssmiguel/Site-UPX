@@ -65,15 +65,32 @@
     <form action="submit_form.php" method="POST">
         <h2>Cadastro</h2>
         <label for="email">E-mail:</label>
-        <input type="email" id="email" name="email" required>
+        <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>       
         <label for="name">Nome:</label>
-        <input type="text" id="name" name="name" required>
+        <input type="text" id="name" name="name" placeholder="Nome Completo" required>
         <label for="phone">Telefone:</label>
-        <input type="tel" id="phone" name="phone" pattern="[0-9]{10,11}" required>
+        <input type="tel" id="phone" name="phone" pattern="\(\d{2}\)\d{9}" placeholder="(15)993345578" required>
         <label for="password">Senha:</label>
-        <input type="password" id="password" name="password" minlength="5" required>
+        <input type="password" id="password" name="password" minlength="5" placeholder="Mínimo 5 Caracteres" required>
+        <span toggle="#password" class="toggle-password"></span>
         <input type="submit" value="Cadastrar">
         <button class="back-button" onclick="window.location.href='index.html'">Voltar Para Tela de Login</button>
     </form>
+
+    <script>
+        // Adiciona o evento de clique ao ícone de olho
+document.querySelectorAll('.toggle-password').forEach(function(icon) {
+    icon.addEventListener('click', function() {
+        var input = document.querySelector(this.getAttribute('toggle'));
+        if (input.type === 'password') {
+            input.type = 'text';
+            this.classList.add('active');
+        } else {
+            input.type = 'password';
+            this.classList.remove('active');
+        }
+    });
+});
+    </script>
 </body>
 </html>
