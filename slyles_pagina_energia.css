@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: #f8f9fa; /* Cor de fundo suave */
+    background-color: #e9f2fd; /* Cor de fundo azul claro */
 }
 
 h1 {
@@ -130,4 +130,3 @@ input[type="submit"]:hover {
     width: 1em;
     margin-left: -1em; /* Alinha o ícone com o texto */
 }
-

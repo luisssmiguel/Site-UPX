@@ -2,11 +2,16 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    background: linear-gradient(to bottom right, #fcf6c8, #f7ffad); /* Degradê de amarelo claro para amarelo mais claro */
+    height: 100vh; /* Ocupa toda a altura da tela */
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
 }
 
 .container {
     max-width: 800px;
-    margin: 50px auto;
+    margin: 20px auto 0; /* Reduzindo a margem superior para 20px */
     text-align: center;
 }
 
@@ -17,7 +22,7 @@ h1 {
 button {
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #007bff;
+    background-color: #ff0000; /* Vermelho */
     color: #fff;
     border: none;
     cursor: pointer;
@@ -25,5 +30,5 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #cc0000; /* Tom mais escuro de vermelho ao passar o mouse */
 }

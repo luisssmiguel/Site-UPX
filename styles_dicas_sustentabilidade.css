@@ -1,5 +1,6 @@
 body {
     font-family: Arial, sans-serif;
+    background-color: #d4edda; /* Cor de fundo verde claro */
 }
 
 header {
@@ -12,6 +13,10 @@ header {
 .container {
     max-width: 800px;
     margin: 20px auto;
+    background-color: #fff; /* Cor de fundo branca para o conteúdo */
+    border-radius: 10px; /* Borda arredondada */
+    padding: 20px; /* Espaçamento interno */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
 section {
@@ -41,23 +46,37 @@ a:hover {
 }
 
 .articles {
-    text-align: center; /* Centralizar o conteúdo horizontalmente */
+    text-align: center; /* Centralize o conteúdo horizontalmente */
 }
 
 .articles h2 {
-    margin-bottom: 30px; /* Adicionar espaço entre o título e o iframe */
+    margin-bottom: 30px; /* Adicione espaço entre o título e o iframe */
 }
 
 .iframe-container {
-    display: inline-block; /* Permite o alinhamento vertical */
-    vertical-align: middle; /* Centralizar o conteúdo verticalmente */
+    display: flex; /* Use flexbox para centralizar */
+    justify-content: center; /* Centralize horizontalmente */
+    align-items: center; /* Centralize verticalmente */
+    border-radius: 10px; /* Adicione bordas arredondadas */
+    overflow: hidden; /* Oculte o conteúdo extra */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adicione sombra suave */
 }
 
 .articles iframe {
-    width: 1000px; /* Largura desejada do iframe */
-    height: 600px; /* Altura desejada do iframe */
-    border: none; /* Remover borda do iframe, se necessário */
-    overflow: auto; /* Mostrar barras de rolagem quando necessário */
+    max-width: 100%; /* Tamanho máximo do iframe */
+    border: none; /* Remova a borda do iframe */
 }
 
+.sustainability-tips {
+    padding: 20px;
+    background-color: #d4edda; /* Cor de fundo verde claro */
+    border-radius: 10px; /* Borda arredondada */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
 
+.sustainability-tips b::before {
+    content: counter(tip) ". ";
+    counter-increment: tip;
+    font-weight: bold;
+    margin-right: 5px;
+}
