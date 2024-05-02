@@ -44,7 +44,7 @@
             cursor: pointer;
         }
 
-        input[type="text"] {
+        input[type="text"], input[type="date"], input[type="time"] {
             width: 100%;
             padding: 10px;
             margin: 5px 0;
@@ -91,7 +91,8 @@
                 <th>Data</th>
                 <th>Tipo de Resíduo</th>
                 <th>Local</th>
-                <th>Horário</th>
+                <th>Início</th>
+                <th>Fim</th>
                 <th>Excluir</th>
             </tr>
         </thead>
@@ -110,18 +111,26 @@
         <span class="close">&times;</span>
         <h2>Novo Evento</h2>
         <label for="eventDate">Data:</label>
-        <input type="text" id="eventDate">
+        <input type="date" id="eventDate">
         <label for="eventType">Tipo de Resíduo:</label>
         <input type="text" id="eventType">
         <label for="eventLocation">Local:</label>
         <input type="text" id="eventLocation">
-        <label for="eventTime">Horário:</label>
-        <input type="text" id="eventTime">
+        <label for="eventStartTime">Horário de Início:</label>
+        <input type="time" id="eventStartTime">
+        <label for="eventEndTime">Horário de Fim:</label>
+        <input type="time" id="eventEndTime">
         <button id="saveEventBtn">Salvar</button>
     </div>
 </div>
 
 <script>
+    // Função para formatar a data
+    function formatDate(date) {
+        var options = { day: 'numeric', month: 'long', year: 'numeric' };
+        return new Date(date).toLocaleDateString('pt-BR', options);
+    }
+
     // Função para carregar os eventos salvos do localStorage
     function loadEvents() {
         var savedEvents = localStorage.getItem('events');
@@ -165,10 +174,11 @@
     });
 
     document.getElementById('saveEventBtn').addEventListener('click', function() {
-        var eventDate = document.getElementById('eventDate').value;
+        var eventDate = formatDate(document.getElementById('eventDate').value);
         var eventType = document.getElementById('eventType').value;
         var eventLocation = document.getElementById('eventLocation').value;
-        var eventTime = document.getElementById('eventTime').value;
+        var eventStartTime = document.getElementById('eventStartTime').value;
+        var eventEndTime = document.getElementById('eventEndTime').value;
 
         // Cria uma nova linha para o evento
         var newRow = document.createElement('tr');
@@ -176,7 +186,8 @@
             <td>${eventDate}</td>
             <td>${eventType}</td>
             <td>${eventLocation}</td>
-            <td>${eventTime}</td>
+            <td>${eventStartTime}</td>
+            <td>${eventEndTime}</td>
             <td><button class="delete-row-btn">Excluir</button></td>
         `;
 
@@ -199,7 +210,7 @@
         for (var i = 0; i < deleteButtons.length; i++) {
             deleteButtons[i].style.display = deleteMode ? "inline" : "none";
         }
-    }
+    };
 
     // Adiciona o evento de clique no botão de exclusão
     document.getElementById('deleteEventsBtn').addEventListener('click', function() {
