@@ -8,13 +8,13 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #4CAF50, #007bff, #ffeb3b);
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+            background: linear-gradient(135deg, #4CAF50, #007bff, #ffeb3b);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
         
         form {
@@ -82,32 +82,37 @@
         document.getElementById('registerForm').addEventListener('submit', function(event) {
             event.preventDefault(); // Evita o envio padrão do formulário
             
-            // Captura os valores do formulário
-            const formData = new FormData(this);
-            const formDataJson = {};
-            formData.forEach((value, key) => {
-                formDataJson[key] = value;
-            });
+            // Captura os valores dos campos do formulário
+            const email = document.getElementById('email').value;
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
 
-            // Configuração da requisição
-            const apiKey = '$2a$10$LuATwdayB1bFAjLU9gsChufqDoYEdxur6xCr8M71yU26hVVcTuKJu';
-            const binId = '66329fd0e41b4d34e4ed658e';
-            const config = {
+            // Cria o objeto formDataJson com os valores capturados
+            const formDataJson = {
+                email: email,
+                name: name,
+                phone: phone,
+                password: password
+            };
+
+            // Configuração da requisição para enviar os dados para o backend
+            const requestOptions = {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'X-Master-Key': apiKey
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(formDataJson)
             };
 
-            // Faz a requisição para o JSONBin
-            fetch(`https://api.jsonbin.io/v3/b/${binId}`, config)
+            // Faz a requisição para o backend
+            fetch('mysql://root:MZHTPWxfWwRCLpMewFwppRtHLYLkpksg@roundhouse.proxy.rlwy.net:19875/railway', requestOptions)
                 .then(response => response.json())
                 .then(data => {
                     console.log('Data saved successfully:', data);
                     alert('Cadastro realizado com sucesso!');
-                    // Aqui você pode redirecionar para outra página após o cadastro
+                    // Redireciona para outra página após o cadastro
+                    window.location.href = 'index.html';
                 })
                 .catch(error => {
                     console.error('Error saving data:', error);
@@ -129,5 +134,6 @@
             });
         });
     </script>
+    <script src="cadastro.js"></script>
 </body>
 </html>
