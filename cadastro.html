@@ -63,7 +63,7 @@
     </style>
 </head>
 <body>
-    <form id="registerForm">
+    <form id="registerForm" action="cadastro.php" method="POST">
         <h2>Cadastro</h2>
         <label for="email">E-mail:</label>
         <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>       
@@ -73,67 +73,27 @@
         <input type="tel" id="phone" name="phone" pattern="\(\d{2}\)\d{9}" placeholder="(15)993345578" required>
         <label for="password">Senha:</label>
         <input type="password" id="password" name="password" minlength="5" placeholder="Mínimo 5 Caracteres" required>
-        <span toggle="#password" class="toggle-password"></span>
+        <span id="togglePassword" class="toggle-password"></span>
         <input type="submit" value="Cadastrar">
-        <button class="back-button" onclick="window.location.href='index.html'">Voltar Para Tela de Login</button>
+        <button type="button" class="back-button" onclick="window.location.href='index.html'">Voltar Para Tela de Login</button>
     </form>
 
     <script>
-        document.getElementById('registerForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Evita o envio padrão do formulário
-            
-            // Captura os valores dos campos do formulário
-            const email = document.getElementById('email').value;
-            const name = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
-            const password = document.getElementById('password').value;
-
-            // Cria o objeto formDataJson com os valores capturados
-            const formDataJson = {
-                email: email,
-                name: name,
-                phone: phone,
-                password: password
-            };
-
-            // Configuração da requisição para enviar os dados para o backend
-            const requestOptions = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formDataJson)
-            };
-
-            // Faz a requisição para o backend
-            fetch('mysql://root:MZHTPWxfWwRCLpMewFwppRtHLYLkpksg@roundhouse.proxy.rlwy.net:19875/railway', requestOptions)
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Data saved successfully:', data);
-                    alert('Cadastro realizado com sucesso!');
-                    // Redireciona para outra página após o cadastro
-                    window.location.href = 'index.html';
-                })
-                .catch(error => {
-                    console.error('Error saving data:', error);
-                    alert('Erro ao cadastrar. Por favor, tente novamente.');
-                });
-        });
-
         // Adiciona o evento de clique ao ícone de olho
-        document.querySelectorAll('.toggle-password').forEach(function(icon) {
-            icon.addEventListener('click', function() {
-                var input = document.querySelector(this.getAttribute('toggle'));
-                if (input.type === 'password') {
-                    input.type = 'text';
-                    this.classList.add('active');
-                } else {
-                    input.type = 'password';
-                    this.classList.remove('active');
-                }
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.toggle-password').forEach(function(icon) {
+                icon.addEventListener('click', function() {
+                    var input = document.querySelector('#password');
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        this.classList.add('active');
+                    } else {
+                        input.type = 'password';
+                        this.classList.remove('active');
+                    }
+                });
             });
         });
     </script>
-    <script src="cadastro.js"></script>
 </body>
 </html>

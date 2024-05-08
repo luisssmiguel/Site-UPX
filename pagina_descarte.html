@@ -56,6 +56,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             text-align: center; /* Centraliza o conteúdo dentro do container */
+            position: relative; /* Adicionado para posicionamento dos botões */
         }
 
         /* Estilo para o canvas */
@@ -63,6 +64,19 @@
             margin-top: 20px; /* Adiciona um espaçamento superior */
             width: 100%;
             height: auto;
+        }
+
+        /* Estilos para os botões */
+        .container button {
+            margin-top: 10px; /* Adiciona espaçamento entre os botões */
+        }
+
+        /* Adiciona margem para os botões quando a tela for pequena */
+        @media screen and (max-width: 600px) {
+            .container button {
+                display: block; /* Altera a exibição para o padrão */
+                margin: 10px auto; /* Centraliza os botões */
+            }
         }
     </style>
 </head>
@@ -118,20 +132,37 @@
 <script src="script3.js"></script>
 
 <script>
+    var originalButtonPosition; // Variável global para armazenar a posição original dos botões
+    
+    // Função para armazenar a posição original dos botões
+    function storeOriginalButtonPosition() {
+        var container = document.querySelector('.container div');
+        originalButtonPosition = {
+            top: container.offsetTop,
+            left: container.offsetLeft
+        };
+    }
+    
+    // Chame a função para armazenar a posição original dos botões quando a página é carregada
+    window.onload = storeOriginalButtonPosition;
+    
+    // Lógica para mostrar gráfico de 2023
     document.getElementById('show2023Btn').addEventListener('click', function() {
-        // Lógica para mostrar gráfico de 2023
-    });
-
-    document.getElementById('clearDataBtn').addEventListener('click', function() {
-        // Lógica para apagar dados
+        // Restaure a posição dos botões para a posição original
+        var container = document.querySelector('.container div');
+        container.style.position = 'relative';
+        container.style.left = 'auto';
+        container.style.top = 'auto';
     });
 
     document.getElementById('backToCurrentBtn').addEventListener('click', function() {
         // Lógica para voltar para o gráfico atual
-    });
-
-    document.getElementById('addMoreDataBtn').addEventListener('click', function() {
-        // Lógica para abrir o modal de adicionar mais dados
+        
+        // Restaure a posição dos botões para a posição original
+        var container = document.querySelector('.container div');
+        container.style.position = 'relative';
+        container.style.left = 'auto';
+        container.style.top = 'auto';
     });
 </script>
 
