@@ -10,36 +10,45 @@
 <body>
     <div class="login-container">
         <h2>Login</h2>
-            <div class="input-group">
-                <label for="username">Usuário:</label>
-                <input type="email" id="username" name="username" required placeholder="Digite seu e-mail">
-            </div>
-            <div class="input-group">
-                <label for="password">Senha:</label>
-                <input type="password" id="password" name="password" required placeholder="Digite sua senha">
-            </div>
-            <button onclick="logar()">Entrar</button>
-            <br>
-            <br>
-            <button type="button" class="secondary-button" onclick="window.location.href='cadastro.html'">Cadastrar</button>
-        </form>
-        <script>
-            function logar(){
-                var login = document.getElementById("username").value;
-                var senha = document.getElementById("password").value;
-    
-                if(login === "admin@gmail.com" && senha === "admin"){
+        <div class="input-group">
+            <label for="username">Usuário:</label>
+            <input type="email" id="username" name="username" required placeholder="Digite seu e-mail">
+        </div>
+        <div class="input-group">
+            <label for="password">Senha:</label>
+            <input type="password" id="password" name="password" required placeholder="Digite sua senha">
+        </div>
+        <button onclick="logar()">Entrar</button>
+        <br>
+        <br>
+        <button type="button" class="secondary-button" onclick="window.location.href='cadastro.html'">Cadastrar</button>
+    </div>
+    <script>
+        function logar(){
+            var login = document.getElementById("username").value;
+            var senha = document.getElementById("password").value;
+
+            // Envia os dados para o MockAPI para autenticar
+            fetch('https://662d5880a7dda1fa378a6de6.mockapi.io/codetech/usuarios', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const usuario = data.find(user => user.email === login && user.password === senha);
+                if(usuario) {
                     alert("Login realizado com sucesso!");
                     window.location.href = "pagina_dois.html"; // Redireciona para a página 2
                 } else {
                     alert("Usuário ou senha incorretos!");
                 }
-            }
-        </script>
-  
-</script>
-        </script>
-
-    </div>
+            })
+            .catch(error => {
+                console.error('Erro ao autenticar:', error);
+            });
+        }
+    </script>
 </body>
 </html>

@@ -60,27 +60,17 @@
         .back-button:hover {
             background-color: #0056b3;
         }
-        .success-message {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
-            margin-bottom: 10px;
-            display: none; /* Inicialmente oculto */
-        }
     </style>
 </head>
 <body>
-    <form id="registerForm">
+    <form id="registerForm" action="cadastro.php" method="POST">
         <h2>Cadastro</h2>
-        <div class="success-message" id="successMessage">Usuário cadastrado com sucesso!</div>
         <label for="email">E-mail:</label>
         <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>       
         <label for="name">Nome:</label>
         <input type="text" id="name" name="name" placeholder="Nome Completo" required>
         <label for="phone">Telefone:</label>
-        <input type="tel" id="phone" name="phone" pattern="\d{11}" placeholder="15985555555" required>
+        <input type="tel" id="phone" name="phone" pattern="\(\d{2}\)\d{9}" placeholder="(15)993345578" required>
         <label for="password">Senha:</label>
         <input type="password" id="password" name="password" minlength="5" placeholder="Mínimo 5 Caracteres" required>
         <span id="togglePassword" class="toggle-password"></span>
@@ -102,41 +92,6 @@
                         this.classList.remove('active');
                     }
                 });
-            });
-        });
-
-        // Evento de envio do formulário
-        document.getElementById('registerForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Previne o comportamento padrão do formulário
-
-            // Coleta os dados do formulário
-            const formData = new FormData(this);
-
-            // Converte os dados do formulário para um objeto JSON
-            const formDataJson = {};
-            formData.forEach((value, key) => formDataJson[key] = value);
-
-            // Envia os dados para o MockAPI.io
-            fetch('https://662d5880a7dda1fa378a6de6.mockapi.io/codetech/usuarios', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formDataJson)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Erro ao cadastrar usuário');
-                }
-                document.getElementById('successMessage').style.display = 'block'; // Exibe a mensagem de sucesso
-                return response.json();
-            })
-            .then(data => {
-                console.log('Usuário cadastrado com sucesso:', data);
-                // Aqui você pode redirecionar o usuário ou fazer qualquer outra ação necessária após o cadastro
-            })
-            .catch(error => {
-                console.error('Erro ao cadastrar usuário:', error);
             });
         });
     </script>
