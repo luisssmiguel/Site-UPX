@@ -86,7 +86,7 @@
     <h1>Quantidade de Resíduos</h1>
     <div>
         <!-- O botão "Adicionar Dados" agora será ocultado por padrão -->
-        <button style="display: none;" onclick="addDataAndSaveToAPI()" id="addDataBtn">Adicionar Dados</button>
+        <button style="display: none;" onclick="addData()" id="addDataBtn">Adicionar Dados</button>
         <button id="show2023Btn">Visualizar Gráficos de 2023</button>
         <button id="clearDataBtn">Apagar Dados</button>
         <button id="backToCurrentBtn">Voltar para o Gráfico Atual</button>
@@ -133,42 +133,7 @@
 
 <script>
     var originalButtonPosition; // Variável global para armazenar a posição original dos botões
-    var myChart; // Variável global para armazenar o gráfico
-
-    // Função para inicializar o gráfico
-    function initializeChart() {
-        var ctx = document.getElementById('myChart').getContext('2d');
-        myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'Quantidade de Resíduos Reciclados (kg)',
-                    backgroundColor: 'green',
-                    data: []
-                }, {
-                    label: 'Quantidade de Resíduos para o Lixo (kg)',
-                    backgroundColor: 'red',
-                    data: []
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    }
-
-    // Função para destruir o gráfico atual
-    function destroyChart() {
-        if (myChart) {
-            myChart.destroy();
-        }
-    }
-
+    
     // Função para armazenar a posição original dos botões
     function storeOriginalButtonPosition() {
         var container = document.querySelector('.container div');
@@ -179,10 +144,7 @@
     }
     
     // Chame a função para armazenar a posição original dos botões quando a página é carregada
-    window.onload = function() {
-        storeOriginalButtonPosition();
-        initializeChart();
-    };
+    window.onload = storeOriginalButtonPosition;
     
     // Lógica para mostrar gráfico de 2023
     document.getElementById('show2023Btn').addEventListener('click', function() {
@@ -202,43 +164,6 @@
         container.style.left = 'auto';
         container.style.top = 'auto';
     });
-
-    // Função para adicionar dados ao gráfico e enviar para o Mock API
-    function addDataAndSaveToAPI() {
-        // Se o gráfico não estiver inicializado, retorne
-        if (!myChart) {
-            return;
-        }
-
-        // Obter os dados do gráfico após a adição
-        const chartData = myChart.data.datasets[0].data;
-        const newData = {
-            Mes: "Mes " + (chartData.length + 1), // Adiciona o próximo mês na ordem
-            Ano: 53, // Ano fixo conforme especificado
-            Kilos: Math.floor(Math.random() * 100) + 1 // Gera um valor aleatório de kilos (1-100)
-        };
-
-        // Enviar os dados para o Mock API
-        fetch('https://662d5880a7dda1fa378a6de6.mockapi.io/codetech/Descarte', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newData)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Erro ao salvar dados no Mock API');
-            }
-            console.log('Dados salvos com sucesso no Mock API');
-        })
-        .catch(error => {
-            console.error('Erro ao salvar dados no Mock API:', error);
-        });
-    }
-
-    // Adicionar um ouvinte de evento ao botão para adicionar dados
-    document.getElementById('addMoreDataBtn').addEventListener('click', addDataAndSaveToAPI);
 </script>
 
 </body>

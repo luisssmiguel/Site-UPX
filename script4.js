@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     gerarRelatorioBtn.addEventListener('click', async function () {
         try {
             // Obtém os dados do Mock API
-            const response = await fetch('https://662d5880a7dda1fa378a6de6.mockapi.io/codetech/usuarios');
+            const response = await fetch('https://662d5880a7dda1fa378a6de6.mockapi.io/codetech/Descarte');
             const data = await response.json();
 
             // Cria um novo documento PDF
@@ -15,12 +15,19 @@ document.addEventListener("DOMContentLoaded", function () {
             let y = page.getHeight() - 50;
 
             // Itera sobre os dados e os adiciona ao PDF
-            data.forEach(item => {
-                page.drawText(`ID: ${item.id}`, { x: 50, y, size: 12 });
-                page.drawText(`Nome: ${item.nome}`, { x: 50, y: y - 20, size: 12 });
-                page.drawText(`Descrição: ${item.descricao}`, { x: 50, y: y - 40, size: 12 });
-                y -= 60;
-            });
+            const startY = 800; // Posição inicial mais alta na página
+const lineHeight = 20; // Altura da linha
+
+data.forEach((item, index) => {
+    const y = startY - index * lineHeight * 5; // Ajuste vertical para cada item
+
+    page.drawText(`ID: ${item.id}`, { x: 50, y: y, size: 12 });
+    page.drawText(`Mês: ${item.Mes}`, { x: 50, y: y - lineHeight, size: 12 });
+    page.drawText(`Ano: ${item.Ano}`, { x: 50, y: y - lineHeight * 2, size: 12 });
+    page.drawText(`Kilos Reciclados: ${item.KilosReciclados}`, { x: 50, y: y - lineHeight * 3, size: 12 });
+    page.drawText(`Kilos Descartados: ${item.KilosDescartados}`, { x: 50, y: y - lineHeight * 4, size: 12 });
+});
+
 
             // Salva o PDF com o nome 'relatorio.pdf'
             const pdfBytes = await pdfDoc.save();
