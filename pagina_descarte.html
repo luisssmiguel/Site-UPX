@@ -95,7 +95,7 @@
     <canvas id="myChart"></canvas>
 </div>
     
-<!-- Popup Modal -->
+<!-- Popup Modal para adicionar dados -->
 <div id="myModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
@@ -126,6 +126,18 @@
             <input type="number" id="newTrashAmount" min="0">
         </div>
         <button id="saveNewDataBtn">Salvar</button> <!-- Botão para salvar os novos dados -->
+    </div>
+</div>
+
+<!-- Popup Modal para selecionar o mês a ser apagado -->
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <span class="closeDeleteModal">&times;</span>
+        <h2>Selecionar Mês para Apagar</h2>
+        <select id="monthToDelete">
+            <!-- Options serão adicionadas dinamicamente -->
+        </select>
+        <button id="confirmDeleteBtn">Confirmar Apagar</button>
     </div>
 </div>
 

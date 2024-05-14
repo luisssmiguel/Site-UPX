@@ -1,3 +1,4 @@
+// JavaScript (script3.js)
 document.addEventListener("DOMContentLoaded", function () {
     var currentYearData = {
         labels: JSON.parse(localStorage.getItem('labels')) || [],
@@ -54,137 +55,123 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function deleteAllDataFromAPI() {
+    function deleteDataFromAPI(month) {
         fetch('https://662d5880a7dda1fa378a6de6.mockapi.io/codetech/Descarte')
             .then(response => response.json())
             .then(data => {
-                data.forEach(item => {
-                    fetch(`https://662d5880a7dda1fa378a6de6.mockapi.io/codetech/Descarte/${item.id}`, {
+                const itemToDelete = data.find(item => item.month === month);
+                if (itemToDelete) {
+                    fetch(`https://662d5880a7dda1fa378a6de6.mockapi.io/codetech/Descarte/${itemToDelete.id}`, {
                         method: 'DELETE'
                     })
                     .then(response => {
                         if (!response.ok) {
-                            throw new Error('Erro ao apagar os dados da API');
+                            throw new Error('Erro ao deletar os dados na API');
                         }
-                        console.log(`Dados com id ${item.id} apagados com sucesso`);
+                        console.log('Dados deletados com sucesso');
                     })
                     .catch(error => {
-                        console.error('Erro ao apagar os dados da API:', error);
+                        console.error('Erro ao deletar os dados na API:', error);
                     });
-                });
+                }
             })
             .catch(error => {
                 console.error('Erro ao obter os dados da API:', error);
             });
     }
 
-    function addData() {
-        var month = document.getElementById('month').value;
-        var recycledAmount = parseFloat(document.getElementById('recycledAmount').value);
-        var trashAmount = parseFloat(document.getElementById('trashAmount').value);
-
-        if (isNaN(recycledAmount) || isNaN(trashAmount)) {
-            alert("Por favor, insira números válidos para as quantidades.");
-            return;
-        }
-
-        var newData = {
-            Mes: month,
-            Ano: new Date().getFullYear(),
-            KilosReciclados: recycledAmount,
-            KilosDescartados: trashAmount
-        };
-
-        myChart.data.labels.push(month);
-        myChart.data.datasets[0].data.push(recycledAmount);
-        myChart.data.datasets[1].data.push(trashAmount);
-        
-        // Salvar os dados no localStorage
-        localStorage.setItem('labels', JSON.stringify(myChart.data.labels));
-        localStorage.setItem('recycledData', JSON.stringify(myChart.data.datasets[0].data));
-        localStorage.setItem('trashData', JSON.stringify(myChart.data.datasets[1].data));
-
-        // Salvar os dados na API
-        saveDataToAPI(newData);
-
-        myChart.update();
-    }
-
-    document.getElementById('addDataBtn').addEventListener('click', addData);
-
-    // Função para abrir o modal ao clicar no botão "Adicionar Mais"
-    var addMoreDataBtn = document.getElementById('addMoreDataBtn');
-    addMoreDataBtn.addEventListener('click', function() {
-        document.getElementById('myModal').style.display = "block";
+    // Função para abrir o modal de adicionar dados
+    document.getElementById('addMoreDataBtn').addEventListener('click', function() {
+        document.getElementById('myModal').style.display = 'block';
     });
 
-    // Função para fechar o modal ao clicar no botão fechar (X)
+    // Função para fechar o modal de adicionar dados
     document.getElementsByClassName("close")[0].addEventListener('click', function() {
-        document.getElementById('myModal').style.display = "none";
+        document.getElementById('myModal').style.display = 'none';
     });
 
-    // Função para salvar os novos dados inseridos no modal
+    // Função para salvar os novos dados
     document.getElementById('saveNewDataBtn').addEventListener('click', function() {
         var newMonth = document.getElementById('newMonth').value;
-        var newRecycledAmount = parseFloat(document.getElementById('newRecycledAmount').value);
-        var newTrashAmount = parseFloat(document.getElementById('newTrashAmount').value);
+        var newRecycledAmount = document.getElementById('newRecycledAmount').value;
+        var newTrashAmount = document.getElementById('newTrashAmount').value;
 
-        if (isNaN(newRecycledAmount) || isNaN(newTrashAmount)) {
-            alert("Por favor, insira números válidos para as quantidades.");
-            return;
+        if (newMonth && newRecycledAmount && newTrashAmount) {
+            myChart.data.labels.push(newMonth);
+            myChart.data.datasets[0].data.push(newRecycledAmount);
+            myChart.data.datasets[1].data.push(newTrashAmount);
+
+            localStorage.setItem('labels', JSON.stringify(myChart.data.labels));
+            localStorage.setItem('recycledData', JSON.stringify(myChart.data.datasets[0].data));
+            localStorage.setItem('trashData', JSON.stringify(myChart.data.datasets[1].data));
+
+            // Salvar os dados na API
+            saveDataToAPI({ month: newMonth, recycled: newRecycledAmount, trash: newTrashAmount });
+
+            myChart.update();
         }
 
-        var newData = {
-            Mes: newMonth,
-            Ano: new Date().getFullYear(),
-            KilosReciclados: newRecycledAmount,
-            KilosDescartados: newTrashAmount
-        };
-
-        myChart.data.labels.push(newMonth);
-        myChart.data.datasets[0].data.push(newRecycledAmount);
-        myChart.data.datasets[1].data.push(newTrashAmount);
-        
-        // Salvar os novos dados no localStorage
-        localStorage.setItem('labels', JSON.stringify(myChart.data.labels));
-        localStorage.setItem('recycledData', JSON.stringify(myChart.data.datasets[0].data));
-        localStorage.setItem('trashData', JSON.stringify(myChart.data.datasets[1].data));
-
-        // Salvar os dados na API
-        saveDataToAPI(newData);
-
-        myChart.update();
-
         // Fechar o modal após salvar os dados
-        document.getElementById('myModal').style.display = "none";
+        document.getElementById('myModal').style.display = 'none';
     });
 
-    // Função para apagar os dados salvos
-    var clearDataBtn = document.getElementById('clearDataBtn');
-    clearDataBtn.addEventListener('click', function() {
-        localStorage.removeItem('labels');
-        localStorage.removeItem('recycledData');
-        localStorage.removeItem('trashData');
-        
-        // Limpar os dados do gráfico
-        myChart.data.labels = [];
-        myChart.data.datasets[0].data = [];
-        myChart.data.datasets[1].data = [];
+    // Função para abrir o modal de apagar dados
+    document.getElementById('clearDataBtn').addEventListener('click', function() {
+        var monthSelect = document.getElementById('monthToDelete');
 
-        // Apagar os dados da API
-        deleteAllDataFromAPI();
+        // Limpar as opções do select
+        monthSelect.innerHTML = '';
 
-        myChart.update();
+        // Adicionar opções dinamicamente
+        myChart.data.labels.forEach(month => {
+            var option = document.createElement('option');
+            option.value = month;
+            option.text = month;
+            monthSelect.appendChild(option);
+        });
+
+        document.getElementById('deleteModal').style.display = 'block';
+    });
+
+    // Função para fechar o modal de apagar dados ao clicar no botão fechar (X)
+    document.getElementsByClassName("closeDeleteModal")[0].addEventListener('click', function() {
+        document.getElementById('deleteModal').style.display = 'none';
+    });
+
+    // Função para confirmar a exclusão dos dados do mês selecionado
+    document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+        var monthToDelete = document.getElementById('monthToDelete').value;
+
+        // Remover os dados do gráfico
+        var index = myChart.data.labels.indexOf(monthToDelete);
+        if (index !== -1) {
+            myChart.data.labels.splice(index, 1);
+            myChart.data.datasets[0].data.splice(index, 1);
+            myChart.data.datasets[1].data.splice(index, 1);
+
+            // Atualizar os dados no localStorage
+            localStorage.setItem('labels', JSON.stringify(myChart.data.labels));
+            localStorage.setItem('recycledData', JSON.stringify(myChart.data.datasets[0].data));
+            localStorage.setItem('trashData', JSON.stringify(myChart.data.datasets[1].data));
+
+            // Apagar os dados da API
+            deleteDataFromAPI(monthToDelete);
+
+            myChart.update();
+        }
+
+        // Fechar o modal após apagar os dados
+        document.getElementById('deleteModal').style.display = 'none';
     });
 
     document.getElementById('show2023Btn').addEventListener('click', function() {
         addDataFor2023();
 
         // Esconder o botão "Apagar Dados" quando visualizando o gráfico de 2023
-        clearDataBtn.style.display = 'none';
+        document.getElementById('clearDataBtn').style.display = 'none';
 
         // Esconder o botão "Adicionar Mais" quando visualizando o gráfico de 2023
-        addMoreDataBtn.style.display = 'none';
+        document.getElementById('addMoreDataBtn').style.display = 'none';
     });
 
     function addDataFor2023() {
@@ -198,47 +185,9 @@ document.addEventListener("DOMContentLoaded", function () {
         myChart.data.datasets[1].data = [];
         
         // Adicionando os dados de 2023 ao gráfico
+        var months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
         for (var i = 0; i < 12; i++) {
-            var month = "";
-            switch(i) {
-                case 0:
-                    month = "Janeiro";
-                    break;
-                case 1:
-                    month = "Fevereiro";
-                    break;
-                case 2:
-                    month = "Março";
-                    break;
-                case 3:
-                    month = "Abril";
-                    break;
-                case 4:
-                    month = "Maio";
-                    break;
-                case 5:
-                    month = "Junho";
-                    break;
-                case 6:
-                    month = "Julho";
-                    break;
-                case 7:
-                    month = "Agosto";
-                    break;
-                case 8:
-                    month = "Setembro";
-                    break;
-                case 9:
-                    month = "Outubro";
-                    break;
-                case 10:
-                    month = "Novembro";
-                    break;
-                case 11:
-                    month = "Dezembro";
-                    break;
-            }
-            myChart.data.labels.push(month);
+            myChart.data.labels.push(months[i]);
             myChart.data.datasets[0].data.push(recycledData2023[i]);
             myChart.data.datasets[1].data.push(trashData2023[i]);
         }
@@ -249,7 +198,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Função para voltar para o gráfico padrão (ano corrente)
     document.getElementById('backToCurrentBtn').addEventListener('click', function() {
         // Exibir o botão "Apagar Dados" quando voltamos para o gráfico padrão
-        clearDataBtn.style.display = 'block';
+        document.getElementById('clearDataBtn').style.display = 'block';
         
         // Restaurar os dados do ano corrente do localStorage
         myChart.data.labels = JSON.parse(localStorage.getItem('labels')) || [];
@@ -258,6 +207,6 @@ document.addEventListener("DOMContentLoaded", function () {
         myChart.update(); // Atualiza o gráfico
 
         // Exibir o botão "Adicionar Mais" quando voltamos para o gráfico padrão
-        addMoreDataBtn.style.display = 'block';
+        document.getElementById('addMoreDataBtn').style.display = 'block';
     });
 });
