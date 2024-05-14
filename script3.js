@@ -32,6 +32,52 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    function saveDataToAPI(data) {
+        fetch('https://662d5880a7dda1fa378a6de6.mockapi.io/codetech/Descarte', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao salvar os dados na API');
+            }
+            return response.json();
+        })
+        .then(savedData => {
+            console.log('Dados salvos com sucesso:', savedData);
+        })
+        .catch(error => {
+            console.error('Erro ao salvar os dados na API:', error);
+        });
+    }
+
+    function deleteAllDataFromAPI() {
+        fetch('https://662d5880a7dda1fa378a6de6.mockapi.io/codetech/Descarte')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(item => {
+                    fetch(`https://662d5880a7dda1fa378a6de6.mockapi.io/codetech/Descarte/${item.id}`, {
+                        method: 'DELETE'
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erro ao apagar os dados da API');
+                        }
+                        console.log(`Dados com id ${item.id} apagados com sucesso`);
+                    })
+                    .catch(error => {
+                        console.error('Erro ao apagar os dados da API:', error);
+                    });
+                });
+            })
+            .catch(error => {
+                console.error('Erro ao obter os dados da API:', error);
+            });
+    }
+
     function addData() {
         var month = document.getElementById('month').value;
         var recycledAmount = parseFloat(document.getElementById('recycledAmount').value);
@@ -42,6 +88,13 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        var newData = {
+            Mes: month,
+            Ano: new Date().getFullYear(),
+            KilosReciclados: recycledAmount,
+            KilosDescartados: trashAmount
+        };
+
         myChart.data.labels.push(month);
         myChart.data.datasets[0].data.push(recycledAmount);
         myChart.data.datasets[1].data.push(trashAmount);
@@ -50,6 +103,9 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem('labels', JSON.stringify(myChart.data.labels));
         localStorage.setItem('recycledData', JSON.stringify(myChart.data.datasets[0].data));
         localStorage.setItem('trashData', JSON.stringify(myChart.data.datasets[1].data));
+
+        // Salvar os dados na API
+        saveDataToAPI(newData);
 
         myChart.update();
     }
@@ -78,6 +134,13 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        var newData = {
+            Mes: newMonth,
+            Ano: new Date().getFullYear(),
+            KilosReciclados: newRecycledAmount,
+            KilosDescartados: newTrashAmount
+        };
+
         myChart.data.labels.push(newMonth);
         myChart.data.datasets[0].data.push(newRecycledAmount);
         myChart.data.datasets[1].data.push(newTrashAmount);
@@ -86,6 +149,9 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem('labels', JSON.stringify(myChart.data.labels));
         localStorage.setItem('recycledData', JSON.stringify(myChart.data.datasets[0].data));
         localStorage.setItem('trashData', JSON.stringify(myChart.data.datasets[1].data));
+
+        // Salvar os dados na API
+        saveDataToAPI(newData);
 
         myChart.update();
 
@@ -104,6 +170,9 @@ document.addEventListener("DOMContentLoaded", function () {
         myChart.data.labels = [];
         myChart.data.datasets[0].data = [];
         myChart.data.datasets[1].data = [];
+
+        // Apagar os dados da API
+        deleteAllDataFromAPI();
 
         myChart.update();
     });
