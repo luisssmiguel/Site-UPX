@@ -14,21 +14,21 @@
     <form id="formEletrodomesticos">
         <select id="aparelhoInput">
             <option value="">Selecione um aparelho...</option>
-        <option value="Ar Condicionado">Ar Condicionado</option>
-        <option value="Geladeira">Geladeira</option>
-        <option value="TV">TV</option>
-        <option value="Máquina de Lavar">Máquina de Lavar</option>
-        <option value="Lâmpada Incandescente">Lâmpada Incandescente</option>
-        <option value="Lâmpada LED">Lâmpada LED</option>
-        <option value="Chuveiro Elétrico">Chuveiro Elétrico</option>
-        <option value="Computador Desktop">Computador Desktop</option>
-        <option value="Notebook">Notebook</option>
-        <option value="Ferro de Passar Roupa">Ferro de Passar Roupa</option>
-        <option value="Secador de Cabelo">Secador de Cabelo</option>
-        <option value="Micro-ondas">Micro-ondas</option>
-        <option value="Forno Elétrico">Forno Elétrico</option>
-        <option value="Liquidificador">Liquidificador</option>
-        <option value="Cafeteira Elétrica">Cafeteira Elétrica</option>
+            <option value="Ar Condicionado">Ar Condicionado</option>
+            <option value="Geladeira">Geladeira</option>
+            <option value="TV">TV</option>
+            <option value="Máquina de Lavar">Máquina de Lavar</option>
+            <option value="Lâmpada Incandescente">Lâmpada Incandescente</option>
+            <option value="Lâmpada LED">Lâmpada LED</option>
+            <option value="Chuveiro Elétrico">Chuveiro Elétrico</option>
+            <option value="Computador Desktop">Computador Desktop</option>
+            <option value="Notebook">Notebook</option>
+            <option value="Ferro de Passar Roupa">Ferro de Passar Roupa</option>
+            <option value="Secador de Cabelo">Secador de Cabelo</option>
+            <option value="Micro-ondas">Micro-ondas</option>
+            <option value="Forno Elétrico">Forno Elétrico</option>
+            <option value="Liquidificador">Liquidificador</option>
+            <option value="Cafeteira Elétrica">Cafeteira Elétrica</option>
         </select>
         <div id="quantidadeInput" style="display: none;">
             <label for="quantidade">Quantidade:</label>
@@ -43,7 +43,7 @@
         <label for="custoKwh">Custo por kWh (em R$):</label>
         <input type="text" id="custoKwh" name="custoKwh" value="0.50">
 
-        <label for="tempoUso">Tempo de Uso (em horas):</label>
+        <label for="tempoUso">Tempo de Uso (em horas por dia):</label>
         <input type="text" id="tempoUso" name="tempoUso" value="5">
 
         <input type="submit" value="Calcular">
@@ -52,42 +52,27 @@
     <div id="resultado"></div>
 
     <script>
-        // Função para calcular o consumo de energia
+        // Função para calcular o consumo de energia em kWh
         function calcularConsumo(aparelho, quantidade, tempoUso) {
-            switch (aparelho) {
-                case "Ar Condicionado":
-        return 1000 * quantidade * tempoUso; // 1000 watts por hora
-    case "Geladeira":
-        return 150 * quantidade * tempoUso; // 150 watts por hora
-    case "TV":
-        return 60 * quantidade * tempoUso; // 60 watts por hora
-    case "Máquina de Lavar":
-        return 500 * quantidade * tempoUso; // 500 watts por hora
-    case "Lâmpada Incandescente":
-        return 60 * quantidade * tempoUso; // 60 watts por hora
-    case "Lâmpada LED":
-        return 10 * quantidade * tempoUso; // 10 watts por hora
-    case "Chuveiro Elétrico":
-        return 3000 * quantidade * tempoUso; // 3000 watts por hora
-    case "Computador Desktop":
-        return 200 * quantidade * tempoUso; // 200 watts por hora
-    case "Notebook":
-        return 50 * quantidade * tempoUso; // 50 watts por hora
-    case "Ferro de Passar Roupa":
-        return 1100 * quantidade * tempoUso; // 1100 watts por hora
-    case "Secador de Cabelo":
-        return 1200 * quantidade * tempoUso; // 1200 watts por hora
-    case "Micro-ondas":
-        return 800 * quantidade * tempoUso; // 800 watts por hora
-    case "Forno Elétrico":
-        return 2000 * quantidade * tempoUso; // 2000 watts por hora
-    case "Liquidificador":
-        return 300 * quantidade * tempoUso; // 300 watts por hora
-    case "Cafeteira Elétrica":
-        return 1000 * quantidade * tempoUso; // 1000 watts por hora
-    default:
-        return 0; // Valor padrão para aparelhos não listados 
-            }
+            const wattsPorHora = {
+                "Ar Condicionado": 1000,
+                "Geladeira": 150,
+                "TV": 60,
+                "Máquina de Lavar": 500,
+                "Lâmpada Incandescente": 60,
+                "Lâmpada LED": 10,
+                "Chuveiro Elétrico": 3000,
+                "Computador Desktop": 200,
+                "Notebook": 50,
+                "Ferro de Passar Roupa": 1100,
+                "Secador de Cabelo": 1200,
+                "Micro-ondas": 800,
+                "Forno Elétrico": 2000,
+                "Liquidificador": 300,
+                "Cafeteira Elétrica": 1000
+            };
+            const consumoWatts = wattsPorHora[aparelho] * quantidade * tempoUso;
+            return consumoWatts / 1000; // Convertendo para kWh
         }
 
         document.getElementById("aparelhoInput").addEventListener("change", function() {

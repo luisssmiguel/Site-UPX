@@ -13,7 +13,8 @@ h1 {
 
 h2 {
     text-align: center;
-    margin-bottom: 20px
+    margin-bottom: 20px;
+    color: #007bff; /* Cor azul para os subtítulos */
 }
 
 form {
@@ -31,7 +32,8 @@ label {
     color: #555; /* Cor de texto mais escura */
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="number"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -61,6 +63,9 @@ input[type="submit"]:hover {
     border: 1px solid #ccc;
     border-radius: 3px;
     background-color: #f0f0f0; /* Cor de fundo para o resultado */
+    text-align: center;
+    font-size: 18px;
+    color: #333; /* Cor do texto */
 }
 
 /* Estilos para o botão de adicionar */
@@ -120,6 +125,8 @@ input[type="submit"]:hover {
 #listaAparelhos li {
     margin-bottom: 5px;
     font-size: 16px;
+    display: flex;
+    align-items: center;
 }
 
 #listaAparelhos li::before {
@@ -128,5 +135,5 @@ input[type="submit"]:hover {
     font-weight: bold;
     display: inline-block;
     width: 1em;
-    margin-left: -1em; /* Alinha o ícone com o texto */
+    margin-right: 5px; /* Espaçamento entre o ícone e o texto */
 }
