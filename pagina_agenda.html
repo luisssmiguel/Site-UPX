@@ -125,6 +125,50 @@
 </div>
 
 <script>
+
+document.getElementById('saveEventBtn').addEventListener('click', function() {
+    var eventDateInput = document.getElementById('eventDate');
+    var eventDate = formatDate(eventDateInput.value);
+    var eventType = document.getElementById('eventType').value;
+    var eventLocation = document.getElementById('eventLocation').value;
+    var eventStartTime = document.getElementById('eventStartTime').value;
+    var eventEndTime = document.getElementById('eventEndTime').value;
+
+    var eventData = {
+        "Data": eventDate, // Use a data formatada
+        "TipodeResiduo": eventType,
+        "Local": eventLocation,
+        "inicio": eventStartTime,
+        "fim": eventEndTime
+    };
+
+    // Enviar os dados para a API MockAPI
+    fetch('https://664552b2b8925626f8918e41.mockapi.io/facens/Calendario', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(eventData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Ocorreu um erro ao salvar o evento.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Evento salvo com sucesso:', data);
+        
+        // Atualizar a lista de eventos na página
+        loadEvents();
+    })
+    .catch(error => {
+        console.error('Erro:', error.message);
+    });
+
+    modal.style.display = "none"; // Fecha o modal
+});
+
     // Função para formatar a data
     function formatDate(date) {
         var options = { day: 'numeric', month: 'long', year: 'numeric' };
