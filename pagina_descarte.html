@@ -8,7 +8,6 @@
     <link rel="stylesheet" type="text/css" href="styles_pagina_descarte.css">
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
     <style>
-        /* Estilo para o modal */
         .modal {
             display: none;
             position: fixed;
@@ -43,39 +42,44 @@
             cursor: pointer;
         }
 
-        /* Estilos para o texto "Ano de 2023" e "Ano de 2024" */
         #currentYearPanel {
             display: none;
         }
 
-        /* Estilos para o container */
         .container {
-            margin: 0 auto; /* Centraliza horizontalmente */
-            max-width: 600px; /* Definindo uma largura máxima */
+            margin: 0 auto;
+            max-width: 600px;
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            text-align: center; /* Centraliza o conteúdo dentro do container */
-            position: relative; /* Adicionado para posicionamento dos botões */
+            text-align: center;
+            position: relative;
         }
 
-        /* Estilo para o canvas */
         #myChart {
-            margin-top: 20px; /* Adiciona um espaçamento superior */
+            margin-top: 20px;
             width: 100%;
             height: auto;
         }
 
-        /* Estilos para os botões */
-        .container button {
-            margin-top: 10px; /* Adiciona espaçamento entre os botões */
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
-        /* Adiciona margem para os botões quando a tela for pequena */
+        .button-container button {
+            margin: 5px;
+        }
+
         @media screen and (max-width: 600px) {
-            .container button {
-                display: block; /* Altera a exibição para o padrão */
-                margin: 10px auto; /* Centraliza os botões */
+            .button-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .button-container button {
+                width: 100%;
             }
         }
     </style>
@@ -84,18 +88,16 @@
 
 <div class="container">
     <h1>Quantidade de Resíduos</h1>
-    <div>
-        <!-- O botão "Adicionar Dados" agora será ocultado por padrão -->
+    <div class="button-container" id="buttonContainer">
         <button style="display: none;" onclick="addData()" id="addDataBtn">Adicionar Dados</button>
         <button id="show2023Btn">Visualizar Gráficos de 2023</button>
         <button id="clearDataBtn">Apagar Dados</button>
         <button id="backToCurrentBtn">Voltar para o Gráfico Atual</button>
-        <button id="addMoreDataBtn">Adicionar Mais</button> <!-- Botão para adicionar mais dados -->
+        <button id="addMoreDataBtn">Adicionar Mais</button>
     </div>
     <canvas id="myChart"></canvas>
 </div>
     
-<!-- Popup Modal para adicionar dados -->
 <div id="myModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
@@ -125,17 +127,15 @@
             <label for="newTrashAmount">Quantidade de Resíduos para o Lixo (kg):</label>
             <input type="number" id="newTrashAmount" min="0">
         </div>
-        <button id="saveNewDataBtn">Salvar</button> <!-- Botão para salvar os novos dados -->
+        <button id="saveNewDataBtn">Salvar</button>
     </div>
 </div>
 
-<!-- Popup Modal para selecionar o mês a ser apagado -->
 <div id="deleteModal" class="modal">
     <div class="modal-content">
         <span class="closeDeleteModal">&times;</span>
         <h2>Selecionar Mês para Apagar</h2>
         <select id="monthToDelete">
-            <!-- Options serão adicionadas dinamicamente -->
         </select>
         <button id="confirmDeleteBtn">Confirmar Apagar</button>
     </div>
@@ -144,37 +144,23 @@
 <script src="script3.js"></script>
 
 <script>
-    var originalButtonPosition; // Variável global para armazenar a posição original dos botões
-    
-    // Função para armazenar a posição original dos botões
-    function storeOriginalButtonPosition() {
-        var container = document.querySelector('.container div');
-        originalButtonPosition = {
-            top: container.offsetTop,
-            left: container.offsetLeft
-        };
+    function toggleButtonVisibility(show2023) {
+        document.getElementById('show2023Btn').style.display = show2023 ? 'none' : 'inline-block';
+        document.getElementById('backToCurrentBtn').style.display = show2023 ? 'inline-block' : 'none';
     }
-    
-    // Chame a função para armazenar a posição original dos botões quando a página é carregada
-    window.onload = storeOriginalButtonPosition;
-    
-    // Lógica para mostrar gráfico de 2023
+
+    window.onload = function() {
+        toggleButtonVisibility(false);
+    };
+
     document.getElementById('show2023Btn').addEventListener('click', function() {
-        // Restaure a posição dos botões para a posição original
-        var container = document.querySelector('.container div');
-        container.style.position = 'relative';
-        container.style.left = 'auto';
-        container.style.top = 'auto';
+        toggleButtonVisibility(true);
+        // Lógica para exibir o gráfico de 2023
     });
 
     document.getElementById('backToCurrentBtn').addEventListener('click', function() {
-        // Lógica para voltar para o gráfico atual
-        
-        // Restaure a posição dos botões para a posição original
-        var container = document.querySelector('.container div');
-        container.style.position = 'relative';
-        container.style.left = 'auto';
-        container.style.top = 'auto';
+        toggleButtonVisibility(false);
+        // Lógica para voltar ao gráfico atual
     });
 </script>
 

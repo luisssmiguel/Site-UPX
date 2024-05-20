@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link rel="stylesheet" href="styles_pagina_dois.css">
+    <title>Gerenciamento de Energia e Resíduos</title>
+    <link rel="stylesheet" href="teste.css">
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
 </head>
 <body>
@@ -21,9 +21,44 @@
             </ul>
         </nav>
     </div>
-    <canvas id="energyChart" width="800" height="400"></canvas>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Gerenciamento de Energia e Resíduos</h1>
+        </div>
+
+        <div class="dashboard">
+            <div class="card">
+                <h3>Energia Consumida</h3>
+                <p id="energyConsumed">3900 kWh</p>
+            </div>
+            <div class="card">
+                <h3>Resíduos Coletados</h3>
+                <p id="wasteCollected">390 kg</p>
+            </div>
+            <div class="card">
+                <h3>Custo de Energia</h3>
+                <p id="energyCost">$0</p>
+            </div>
+        </div>
+
+        <div class="charts">
+            <div class="chart-container">
+                <h3>Consumo de Energia ao Longo do Tempo</h3>
+                <canvas id="energyChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3>Resíduos Coletados ao Longo do Tempo</h3>
+                <canvas id="wasteChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3>Progresso</h3>
+                <canvas id="progressChart"></canvas>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="script.js"></script>
-</div>
+    <script src="teste.js"></script>
 </body>
 </html>
