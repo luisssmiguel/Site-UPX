@@ -28,3 +28,23 @@ th {
 tr:hover {
     background-color: #f5f5f5;
 }
+/* Estilos para o calendário */
+input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff; /* Cor de fundo */
+    color: #555; /* Cor do texto */
+    font-size: 16px; /* Tamanho da fonte */
+    outline: none; /* Remove a borda de foco */
+}
+
+/* Estilo para o ícone do calendário */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    font-size: 20px; /* Ajusta o tamanho do ícone */
+    color: #777; /* Cor do ícone */
+    cursor: pointer; /* Altera o cursor ao passar o mouse */
+}
