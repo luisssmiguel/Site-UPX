@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let y = page.getHeight() - margin;
 
             // Adiciona um título ao PDF
-            const title = "Relatório de Descarte de Resíduos";
+            const title = "Relatório de Descarte de Resíduos de 2024";
             const titleFont = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
             const bodyFont = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
 
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Itera sobre os dados e os adiciona ao PDF
             const lineHeight = 20;
             const boxWidth = pageWidth - margin * 2; // largura da caixa de texto
-            const boxHeight = lineHeight * 5 + 10; // altura da caixa de texto
+            const boxHeight = lineHeight * 4 + 10; // altura da caixa de texto
 
             data.forEach((item, index) => {
                 if (y < margin) {
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 // Adiciona os dados ao PDF com estilos adicionais
-                const textY = y - lineHeight * 4; // ajuste vertical para o texto dentro da caixa
+                const textY = y - lineHeight * 3; // ajuste vertical para o texto dentro da caixa
 
                 page.drawRectangle({
                     x: margin,
@@ -73,11 +73,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     color: PDFLib.rgb(0.9, 0.9, 0.9),
                 });
 
-                
-                page.drawText(`Mês: ${item.Mes}`, { x: margin + 10, y: textY + 3 * lineHeight, size: 12, font: bodyFont, color: PDFLib.rgb(0.2, 0.2, 0.2) });
-                page.drawText(`Ano: ${item.Ano}`, { x: margin + 10, y: textY + 2 * lineHeight, size: 12, font: bodyFont, color: PDFLib.rgb(0.2, 0.2, 0.2) });
-                page.drawText(`Kilos Reciclados: ${item.KilosReciclados}`, { x: margin + 10, y: textY + lineHeight, size: 12, font: bodyFont, color: PDFLib.rgb(0.2, 0.2, 0.2) });
-                page.drawText(`Kilos Descartados: ${item.KilosDescartados}`, { x: margin + 10, y: textY, size: 12, font: bodyFont, color: PDFLib.rgb(0.2, 0.2, 0.2) });
+                page.drawText(`Mês: ${item.month}`, { x: margin + 10, y: textY + 2 * lineHeight, size: 12, font: bodyFont, color: PDFLib.rgb(0.2, 0.2, 0.2) });
+                page.drawText(`Kilos Reciclados: ${item.recycled}`, { x: margin + 10, y: textY + lineHeight, size: 12, font: bodyFont, color: PDFLib.rgb(0.2, 0.2, 0.2) });
+                page.drawText(`Kilos Descartados: ${item.trash}`, { x: margin + 10, y: textY, size: 12, font: bodyFont, color: PDFLib.rgb(0.2, 0.2, 0.2) });
 
                 // Atualiza a posição Y para o próximo item
                 y -= boxHeight + 20;

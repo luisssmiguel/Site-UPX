@@ -77,7 +77,16 @@
         }
 
         .delete-row-btn {
-            display: none;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+
+        .delete-row-btn:hover {
+            background-color: #dd3333;
         }
     </style>
 </head>
@@ -101,8 +110,6 @@
         </tbody>
     </table>
     <button id="addEventBtn">Adicionar Evento</button>
-    <button id="deleteEventsBtn" class="delete-events-btn">Excluir Evento</button>
-    <button id="cancelDeleteBtn" style="display: none;">Cancelar</button> <!-- Removido um botão de cancelar -->
 </div>
 
 <!-- Modal para adicionar novo evento -->
@@ -125,17 +132,15 @@
 </div>
 
 <script>
-
 document.getElementById('saveEventBtn').addEventListener('click', function() {
-    var eventDateInput = document.getElementById('eventDate');
-    var eventDate = formatDate(eventDateInput.value);
+    var eventDate = formatDate(document.getElementById('eventDate').value);
     var eventType = document.getElementById('eventType').value;
     var eventLocation = document.getElementById('eventLocation').value;
     var eventStartTime = document.getElementById('eventStartTime').value;
     var eventEndTime = document.getElementById('eventEndTime').value;
 
     var eventData = {
-        "Data": eventDate, // Use a data formatada
+        "Data": eventDate, 
         "TipodeResiduo": eventType,
         "Local": eventLocation,
         "inicio": eventStartTime,
@@ -158,9 +163,10 @@ document.getElementById('saveEventBtn').addEventListener('click', function() {
     })
     .then(data => {
         console.log('Evento salvo com sucesso:', data);
-        
         // Atualizar a lista de eventos na página
         loadEvents();
+        // Limpar campos do formulário
+        clearFormFields();
     })
     .catch(error => {
         console.error('Erro:', error.message);
@@ -169,118 +175,90 @@ document.getElementById('saveEventBtn').addEventListener('click', function() {
     modal.style.display = "none"; // Fecha o modal
 });
 
-    // Função para formatar a data
-    function formatDate(date) {
-        var options = { day: 'numeric', month: 'long', year: 'numeric' };
-        return new Date(date).toLocaleDateString('pt-BR', options);
-    }
+function formatDate(date) {
+    var options = { day: 'numeric', month: 'long', year: 'numeric' };
+    return new Date(date).toLocaleDateString('pt-BR', options);
+}
 
-    // Função para carregar os eventos salvos do localStorage
-    function loadEvents() {
-        var savedEvents = localStorage.getItem('events');
-        if (savedEvents) {
-            document.getElementById('eventList').innerHTML = savedEvents;
+function clearFormFields() {
+    document.getElementById('eventDate').value = '';
+    document.getElementById('eventType').value = '';
+    document.getElementById('eventLocation').value = '';
+    document.getElementById('eventStartTime').value = '';
+    document.getElementById('eventEndTime').value = '';
+}
+
+// Função para carregar eventos do MockAPI
+function loadEvents() {
+    fetch('https://664552b2b8925626f8918e41.mockapi.io/facens/Calendario')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao carregar os eventos.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            var eventList = document.getElementById('eventList');
+            eventList.innerHTML = ''; // Limpa a lista de eventos
+
+            data.forEach(event => {
+                var newRow = document.createElement('tr');
+                newRow.setAttribute('data-event-id', event.id); // Adiciona o ID do evento
+                newRow.innerHTML = `
+                    <td>${event.Data}</td>
+                    <td>${event.TipodeResiduo}</td>
+                    <td>${event.Local}</td>
+                    <td>${event.inicio}</td>
+                    <td>${event.fim}</td>
+                    <td><button class="delete-row-btn" onclick="deleteEvent(${event.id}, this)">Excluir</button></td>
+                `;
+                eventList.appendChild(newRow);
+            });
+        })
+        .catch(error => {
+            console.error('Erro:', error.message);
+        });
+}
+
+// Função para excluir evento
+function deleteEvent(eventId, button) {
+    fetch(`https://664552b2b8925626f8918e41.mockapi.io/facens/Calendario/${eventId}`, {
+        method: 'DELETE'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao excluir o evento.');
         }
-    }
+        console.log('Evento excluído com sucesso.');
+        // Remove a linha da tabela
+        var row = button.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+    })
+    .catch(error => {
+        console.error('Erro:', error.message);
+    });
+}
 
-    // Carrega os eventos ao carregar a página
-    loadEvents();
+// Carrega os eventos ao carregar a página
+loadEvents();
 
-    var modal = document.getElementById('myModal');
-    var btn = document.getElementById("addEventBtn");
-    var span = document.getElementsByClassName("close")[0];
-    var deleteBtn = document.getElementById("deleteEventsBtn");
-    var cancelBtn = document.getElementById("cancelDeleteBtn");
+var modal = document.getElementById('myModal');
+var btn = document.getElementById("addEventBtn");
+var span = document.getElementsByClassName("close")[0];
 
-    btn.onclick = function() {
-        modal.style.display = "block";
-    }
+btn.onclick = function() {
+    modal.style.display = "block";
+}
 
-    span.onclick = function() {
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+    if (event.target == modal) {
         modal.style.display = "none";
     }
-
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-
-    // Limpar o modo de exclusão de evento quando a página é descarregada
-    window.addEventListener('beforeunload', function() {
-        deleteBtn.classList.remove("delete-mode");
-        cancelBtn.style.display = "none";
-
-        var deleteButtons = document.querySelectorAll('.delete-row-btn');
-        for (var i = 0; i < deleteButtons.length; i++) {
-            deleteButtons[i].style.display = "none";
-        }
-    });
-
-    document.getElementById('saveEventBtn').addEventListener('click', function() {
-        var eventDate = formatDate(document.getElementById('eventDate').value);
-        var eventType = document.getElementById('eventType').value;
-        var eventLocation = document.getElementById('eventLocation').value;
-        var eventStartTime = document.getElementById('eventStartTime').value;
-        var eventEndTime = document.getElementById('eventEndTime').value;
-
-        // Cria uma nova linha para o evento
-        var newRow = document.createElement('tr');
-        newRow.innerHTML = `
-            <td>${eventDate}</td>
-            <td>${eventType}</td>
-            <td>${eventLocation}</td>
-            <td>${eventStartTime}</td>
-            <td>${eventEndTime}</td>
-            <td><button class="delete-row-btn">Excluir</button></td>
-        `;
-
-        // Adiciona a linha à tabela
-        document.getElementById('eventList').appendChild(newRow);
-
-        // Salva os eventos no localStorage
-        localStorage.setItem('events', document.getElementById('eventList').innerHTML);
-
-        modal.style.display = "none"; // Fecha o modal
-    });
-
-    deleteBtn.onclick = function() {
-        var deleteMode = deleteBtn.classList.toggle("delete-mode");
-        var deleteBtnText = deleteMode ? "Parar de Excluir " : "Excluir Evento";
-        deleteBtn.textContent = deleteBtnText;
-        cancelBtn.style.display = deleteMode ? "inline" : "none";
-
-        var deleteButtons = document.querySelectorAll('.delete-row-btn');
-        for (var i = 0; i < deleteButtons.length; i++) {
-            deleteButtons[i].style.display = deleteMode ? "inline" : "none";
-        }
-    };
-
-    // Adiciona o evento de clique no botão de exclusão
-    document.getElementById('deleteEventsBtn').addEventListener('click', function() {
-        var deleteButtons = document.querySelectorAll('.delete-row-btn');
-        for (var i = 0; i < deleteButtons.length; i++) {
-            deleteButtons[i].style.display = "inline";
-            deleteButtons[i].onclick = function() {
-                var row = this.parentNode.parentNode;
-                row.parentNode.removeChild(row);
-                // Salva os eventos atualizados no localStorage
-                localStorage.setItem('events', document.getElementById('eventList').innerHTML);
-            };
-        }
-    });
-
-    // Adiciona o evento de clique no botão de cancelar exclusão
-    document.getElementById('cancelDeleteBtn').addEventListener('click', function() {
-        deleteBtn.classList.remove("delete-mode");
-        deleteBtn.textContent = "Excluir Evento";
-        cancelBtn.style.display = "none";
-
-        var deleteButtons = document.querySelectorAll('.delete-row-btn');
-        for (var i = 0; i < deleteButtons.length; i++) {
-            deleteButtons[i].style.display = "none";
-        }
-    });
+}
 </script>
 
 </body>

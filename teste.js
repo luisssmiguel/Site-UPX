@@ -112,4 +112,83 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     });
+
+    // Carregar o próximo evento ao carregar a página
+    loadNextEvent();
 });
+
+// Função para formatar a data
+function formatDate(date) {
+    var options = { day: 'numeric', month: 'long', year: 'numeric' };
+    return new Date(date).toLocaleDateString('pt-BR', options);
+}
+
+// Função para carregar o próximo evento de coleta de resíduos com base na data atual
+function loadNextEvent() {
+    fetch('https://664552b2b8925626f8918e41.mockapi.io/facens/Calendario')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao carregar os eventos.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const now = new Date();
+            let closestEvent = null;
+            let closestEventDate = Infinity;
+
+            // Iterar sobre os eventos para encontrar o mais próximo da data atual
+            data.forEach(event => {
+                const eventDate = parseDate(event.Data);
+                const timeDifference = eventDate.getTime() - now.getTime();
+                if (timeDifference > 0 && timeDifference < closestEventDate) {
+                    closestEvent = event;
+                    closestEventDate = timeDifference;
+                }
+            });
+
+            // Exibir o próximo evento ou uma mensagem se não houver eventos futuros
+            if (closestEvent) {
+                const formattedDate = formatDate(closestEvent.Data);
+                document.getElementById('nextCollection').innerText = `
+                    Tipo de Resíduo: ${closestEvent.TipodeResiduo}
+                    Local: ${closestEvent.Local}
+                    Início: ${closestEvent.inicio}
+                    Fim: ${closestEvent.fim}
+                `;
+            } else {
+                document.getElementById('nextCollection').innerText = 'Nenhuma coleta agendada.';
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error.message);
+            document.getElementById('nextCollection').innerText = 'Erro ao carregar a coleta.';
+        });
+}
+
+// Função para analisar a string de data no formato "23 de maio de 2024" e retornar um objeto Date
+function parseDate(dateString) {
+    const months = [
+        'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
+        'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
+    ];
+
+    const parts = dateString.split(' ');
+
+    if (parts.length !== 5 || parts[1] !== 'de') {
+        throw new Error('Formato de data inválido.');
+    }
+
+    const day = parseInt(parts[0], 10);
+
+    const monthName = parts[2].toLowerCase();
+    const month = months.indexOf(monthName);
+
+    if (month === -1) {
+        throw new Error('Mês inválido.');
+    }
+
+    const year = parseInt(parts[4], 10);
+
+    return new Date(year, month, day);
+}
