@@ -94,6 +94,18 @@
                 var listaAparelhos = document.getElementById("listaAparelhos");
                 var listItem = document.createElement("li");
                 listItem.textContent = quantidadeSelecionada + "x " + aparelhoSelecionado;
+                listItem.dataset.aparelho = aparelhoSelecionado;
+                listItem.dataset.quantidade = quantidadeSelecionada;
+
+                // Adicionando botão para remover o item da lista
+                var removeButton = document.createElement("button");
+                removeButton.textContent = "Remover";
+                removeButton.style.marginLeft = "10px";
+                removeButton.addEventListener("click", function() {
+                    listaAparelhos.removeChild(listItem);
+                });
+
+                listItem.appendChild(removeButton);
                 listaAparelhos.appendChild(listItem);
                 aparelhoInput.value = "";
                 quantidadeInput.value = "1";
@@ -102,24 +114,42 @@
         });
 
         document.getElementById("formEletrodomesticos").addEventListener("submit", function(event) {
-            event.preventDefault(); // Impede o envio do formulário padrão
+    event.preventDefault(); // Impede o envio do formulário padrão
 
-            var custoKwh = parseFloat(document.getElementById("custoKwh").value);
-            var tempoUso = parseFloat(document.getElementById("tempoUso").value);
-            var totalEnergia = 0;
+    var custoKwh = parseFloat(document.getElementById("custoKwh").value);
+    var tempoUso = parseFloat(document.getElementById("tempoUso").value);
+    var totalEnergia = 0;
 
-            var aparelhosSelecionados = document.querySelectorAll("#listaAparelhos li");
-            aparelhosSelecionados.forEach(function(aparelhoSelecionado) {
-                var partes = aparelhoSelecionado.textContent.split("x ");
-                var quantidade = parseInt(partes[0]);
-                var aparelho = partes[1];
-                totalEnergia += calcularConsumo(aparelho, quantidade, tempoUso);
-            });
+    var aparelhosSelecionados = document.querySelectorAll("#listaAparelhos li");
+    aparelhosSelecionados.forEach(function(aparelhoSelecionado) {
+        var quantidade = parseInt(aparelhoSelecionado.dataset.quantidade);
+        var aparelho = aparelhoSelecionado.dataset.aparelho;
+        totalEnergia += calcularConsumo(aparelho, quantidade, tempoUso);
+    });
 
-            var custoTotal = totalEnergia * custoKwh;
+    var custoTotal = totalEnergia * custoKwh;
 
-            document.getElementById("resultado").innerHTML = "<strong>Custo Total de Energia:</strong> R$ " + custoTotal.toFixed(2);
-        });
+    // Salvar os valores na MockAPI
+    fetch('https://6651ef0620f4f4c4427932b2.mockapi.io/energia/energia', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            totalEnergia: totalEnergia.toFixed(2),
+            custoTotal: custoTotal.toFixed(2)
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Dados salvos com sucesso:', data);
+    })
+    .catch(error => {
+        console.error('Erro ao salvar os dados:', error);
+    });
+
+    document.getElementById("resultado").innerHTML = `<strong>Custo Total de Energia:</strong> R$ ${custoTotal.toFixed(2)}<br><strong>Consumo Total de Energia:</strong> ${totalEnergia.toFixed(2)} kWh`;
+});
     </script>
 </body>
 </html>
