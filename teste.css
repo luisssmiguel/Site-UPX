@@ -84,6 +84,7 @@ body {
 .chart-container {
     background-color: #fff;
     padding: 20px;
+    padding-bottom: 40px; /* Adiciona padding-bottom */
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     flex: 1 1 30%; /* Ajuste de largura flexível */
@@ -94,6 +95,7 @@ body {
     align-items: center; /* Centralizar os itens horizontalmente */
     text-align: center; /* Centralizar o texto dentro do contêiner */
 }
+
 
 .chart-container h3 {
     margin-bottom: 20px; /* Adiciona uma margem inferior de 20px para criar espaço entre o título e o gráfico */
